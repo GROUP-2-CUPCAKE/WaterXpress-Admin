@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:waterxpress_admin/app/routes/app_pages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +28,7 @@ class LoginController extends GetxController {
     if (email.isEmpty) {
       Get.snackbar(
         'Error',
-        'Email cannot be empty.',
+        'Email tidak boleh kosong.',
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 2),
         margin: const EdgeInsets.all(12),
@@ -37,7 +39,7 @@ class LoginController extends GetxController {
     if (password.isEmpty) {
       Get.snackbar(
         'Error',
-        'Password cannot be empty.',
+        'Password tidak boleh kosong.',
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 2),
         margin: const EdgeInsets.all(12),
@@ -50,12 +52,11 @@ class LoginController extends GetxController {
         email: email,
         password: password,
       );
-
       // Check if email is verified
       if (userCredential.user!.emailVerified) {
         Get.snackbar(
           'Success',
-          'User logged in successfully',
+          'Anda berhasil masuk',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2),
           margin: const EdgeInsets.all(12),
@@ -64,7 +65,7 @@ class LoginController extends GetxController {
       } else {
         Get.snackbar(
           'Error',
-          'Please verify your email',
+          'Silahkan verifikasi email Anda!',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2),
           margin: const EdgeInsets.all(12),
@@ -75,7 +76,7 @@ class LoginController extends GetxController {
       if (e.code == 'user-not-found') {
         Get.snackbar(
           'Error',
-          'Email not found in Firebase.',
+          'Email tidak ditemukan di Firebase',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2),
           margin: const EdgeInsets.all(12),
@@ -83,7 +84,7 @@ class LoginController extends GetxController {
       } else if (e.code == 'wrong-password') {
         Get.snackbar(
           'Error',
-          'Incorrect password provided.',
+          'Kata sandi salah. Silahkan coba lagi!',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2),
           margin: const EdgeInsets.all(12),
@@ -91,14 +92,23 @@ class LoginController extends GetxController {
       } else if (e.code == 'too-many-requests') {
         Get.snackbar(
           'Error',
-          'Too many requests. Try again later.',
+          'Terlalu banyak permintaan. Coba lagi nanti!',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 2),
+          margin: const EdgeInsets.all(12),
+        );
+      } else {
+        Get.snackbar(
+          'Error',
+          'Periksa email dan kata sandi. Silakan coba lagi!',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2),
           margin: const EdgeInsets.all(12),
         );
       }
+      log("FirebaseAuthException: ${e.code}");
     } catch (e) {
-      print(e);
+      log("Error: $e");
     }
   }
 
