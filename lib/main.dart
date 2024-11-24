@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
             print(snapshot);
             return GetMaterialApp(
               debugShowCheckedModeBanner: false,
-              title: "Moments",
+              title: "WaterXpress",
               initialRoute: AppPages.INITIAL,
               getPages: AppPages.routes,
               theme: ThemeData(

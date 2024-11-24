@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
+import '../../login/views/login_view.dart';
+
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   final count = 0.obs;
   @override
@@ -20,4 +23,9 @@ class HomeController extends GetxController {
   }
 
   void increment() => count.value++;
+
+  void logout() async {
+    await auth.signOut();
+    Get.off(() => LoginView());
+  }
 }

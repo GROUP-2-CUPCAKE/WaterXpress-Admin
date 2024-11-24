@@ -21,33 +21,42 @@ class SplashscreenView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.blue[200],
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: screenHeight * 0.3),
-            const CircleAvatar(
-              radius: 110,
-              backgroundImage: AssetImage('assets/images/logo.png'),
-            ),
-            const SizedBox(height: 30),
-            const CircularProgressIndicator.adaptive(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            ),
-            SizedBox(height: screenHeight * 0.3),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 20.0),
-              child: Text(
-                "by CupCake Team",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF40C4FF), Color(0xFF0288D1), Color(0xFF40C4FF)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: screenHeight * 0.3),
+              const CircleAvatar(
+                radius: 110,
+                backgroundImage: AssetImage('assets/images/logo1.jpeg'),
+              ),
+              const SizedBox(height: 30),
+              const CircularProgressIndicator.adaptive(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+              SizedBox(height: screenHeight * 0.3),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 20.0),
+                child: Text(
+                  "by CupCake Team",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
