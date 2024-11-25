@@ -40,7 +40,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TAMBAH_PRODUK,
-      page: () => const TambahProdukView(),
+      page: () => TambahProdukView(),
       binding: TambahProdukBinding(),
     ),
     GetPage(
