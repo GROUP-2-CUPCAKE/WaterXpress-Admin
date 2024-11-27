@@ -1,8 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
+import '../../login/views/login_view.dart';
+
 class HomeController extends GetxController {
-  var products = <Product>[].obs; 
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  var products = <Product>[].obs;
 
   final CollectionReference ref =
       FirebaseFirestore.instance.collection('Products');
@@ -10,20 +15,22 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchProducts();  
+    fetchProducts();
   }
-
 
   void fetchProducts() {
     ref.snapshots().listen((QuerySnapshot snapshot) {
-      products.clear();  
+      products.clear();
       for (var doc in snapshot.docs) {
-        products.add(Product.fromFirestore(doc)); 
+        products.add(Product.fromFirestore(doc));
       }
     });
   }
 
-  void logout() {}
+  void logout() async {
+    await auth.signOut();
+    Get.off(() => LoginView());
+  }
 }
 
 class Product {
