@@ -7,6 +7,7 @@ import 'app/modules/login/controllers/login_controller.dart';
 import 'app/routes/app_pages.dart';
 import 'app/utils/loading.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +18,7 @@ void main() async {
   runApp(MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
   final authC = Get.put(LoginController(), permanent: true);
   @override
@@ -25,18 +27,52 @@ class MyApp extends StatelessWidget {
         stream: authC.streamAuthStatus,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
-            print(snapshot);
-            return GetMaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: "WaterXpress",
-              initialRoute: AppPages.INITIAL,
-              getPages: AppPages.routes,
-              theme: ThemeData(
-                primarySwatch: Colors.indigo,
-              ),
+            return ScreenUtilInit(
+              designSize: const Size(375, 812), // Ukuran desain (misalnya iPhone X)
+              minTextAdapt: true,
+              splitScreenMode: true,
+              builder: (context, child) {
+                return GetMaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  title: "WaterXpress",
+                  initialRoute: AppPages.INITIAL,
+                  getPages: AppPages.routes,
+                  theme: ThemeData(
+                    primarySwatch: Colors.indigo,
+                  ),
+                  builder: (context, widget) {
+                    // Untuk memastikan ScreenUtil bekerja dengan benar
+                    ScreenUtil.init(context);
+                    return widget!;
+                  },
+                );
+              },
             );
           }
           return LoadingView();
         });
   }
 }
+// class MyApp extends StatelessWidget {
+//   final authC = Get.put(LoginController(), permanent: true);
+//   @override
+//   Widget build(BuildContext context) {
+//     return StreamBuilder<User?>(
+//         stream: authC.streamAuthStatus,
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.active) {
+//             print(snapshot);
+//             return GetMaterialApp(
+//               debugShowCheckedModeBanner: false,
+//               title: "WaterXpress",
+//               initialRoute: AppPages.INITIAL,
+//               getPages: AppPages.routes,
+//               theme: ThemeData(
+//                 primarySwatch: Colors.indigo,
+//               ),
+//             );
+//           }
+//           return LoadingView();
+//         });
+//   }
+
