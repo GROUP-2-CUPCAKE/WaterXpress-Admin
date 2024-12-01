@@ -45,12 +45,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.EDIT_PRODUK,
-      page: () => const EditProdukView(),
+      page: () => EditProdukView(),
       binding: EditProdukBinding(),
     ),
     GetPage(
       name: _Paths.KONFIRMASI_PESANAN,
-      page: () => const KonfirmasiPesananView(),
+      page: () => KonfirmasiPesananView(),
       binding: KonfirmasiPesananBinding(),
     ),
     GetPage(

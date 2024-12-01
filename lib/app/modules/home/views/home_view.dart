@@ -16,11 +16,11 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    const HomeContent(),
-    const Center(child: Text('Riwayat')),
-    const Center(child: Text('Konfirmasi')),
-  ];
+  // final List<Widget> _pages = [
+  //   const HomeContent(),
+  //   const Center(child: Text('Riwayat')),
+  //   const Center(child: Text('Konfirmasi')),
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +126,7 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ],
                   ),
-                  child: _pages[_currentIndex],
+                  child: const HomeContent(),
                 ),
               ),
             ],
@@ -150,9 +150,9 @@ class _HomeViewState extends State<HomeView> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.history, size: 28, color: Colors.white),
+              Icon(Icons.check_circle, size: 28, color: Colors.white),
               Text(
-                'Riwayat',
+                'Konfir',
                 style: TextStyle(fontSize: 11, color: Colors.white),
               ),
             ],
@@ -160,9 +160,9 @@ class _HomeViewState extends State<HomeView> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.check_circle, size: 28, color: Colors.white),
+              Icon(Icons.history, size: 28, color: Colors.white),
               Text(
-                'Konfir',
+                'Riwayat',
                 style: TextStyle(fontSize: 11, color: Colors.white),
               ),
             ],
@@ -180,10 +180,10 @@ class _HomeViewState extends State<HomeView> {
               Get.toNamed(Routes.HOME);
               break;
             case 1:
-              Get.toNamed(Routes.RIWAYAT_PESANAN);
+              Get.toNamed(Routes.KONFIRMASI_PESANAN);
               break;
             case 2:
-              Get.toNamed(Routes.KONFIRMASI_PESANAN);
+              Get.toNamed(Routes.RIWAYAT_PESANAN);
               break;
           }
         },
@@ -324,6 +324,7 @@ class HomeContent extends StatelessWidget {
                           // Informasi Produk
                           Expanded(
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -331,7 +332,7 @@ class HomeContent extends StatelessWidget {
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -367,7 +368,7 @@ class HomeContent extends StatelessWidget {
                                       color: Color(0xFF40C4FF),
                                     ),
                                     onPressed: () {
-                                      Get.toNamed('/edit-produk', arguments: produk);
+                                      Get.toNamed('/edit-produk', arguments: produk.id);
                                     },
                                   ),
                                   const SizedBox(width: 8),
