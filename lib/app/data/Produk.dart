@@ -22,4 +22,14 @@ class Produk {
       images: json['images'] as String,
     );
   }
+
+   Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nama': nama,
+      'harga': harga,
+      'stok': stok,
+      'images': images,
+    };
+  }
 }

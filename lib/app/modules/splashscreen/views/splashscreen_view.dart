@@ -17,10 +17,8 @@ class SplashscreenView extends StatelessWidget {
         Get.offAllNamed(Routes.LOGIN);
       }
     });
-    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.blue[200],
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -34,16 +32,30 @@ class SplashscreenView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: screenHeight * 0.3),
-              const CircleAvatar(
-                radius: 110,
-                backgroundImage: AssetImage('assets/images/logo1.jpeg'),
+              // Expanded to push content to the center
+              const Spacer(flex: 2),
+              
+              // Centered CircleAvatar
+              Center(
+                child: CircleAvatar(
+                  radius: 110,
+                  backgroundImage: AssetImage('assets/images/logo2.png'),
+                ),
               ),
+              
               const SizedBox(height: 30),
-              const CircularProgressIndicator.adaptive(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              
+              // Centered Progress Indicator
+              const Center(
+                child: CircularProgressIndicator.adaptive(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
               ),
-              SizedBox(height: screenHeight * 0.3),
+              
+              // Expanded to push content to the bottom
+              const Spacer(flex: 2),
+              
+              // Centered Text
               const Padding(
                 padding: EdgeInsets.only(bottom: 20.0),
                 child: Text(

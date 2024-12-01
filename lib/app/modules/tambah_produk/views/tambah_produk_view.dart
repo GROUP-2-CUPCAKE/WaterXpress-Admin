@@ -232,7 +232,6 @@ class TambahProdukView extends GetView<TambahProdukController> {
                       Get.snackbar(
                         'Berhasil',
                         'Produk berhasil ditambahkan',
-                        snackPosition: SnackPosition.BOTTOM,
                         duration: const Duration(seconds: 3),
                         margin: const EdgeInsets.all(12),
                       );
