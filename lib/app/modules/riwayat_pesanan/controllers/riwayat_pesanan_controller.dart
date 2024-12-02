@@ -1,23 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:waterxpress_admin/app/data/Riwayat.dart';
 
 class RiwayatPesananController extends GetxController {
-  //TODO: Implement RiwayatPesananController
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  // Referensi ke koleksi Riwayat di Firestore
+  CollectionReference ref = FirebaseFirestore.instance.collection('Riwayat');
+
+  // Stream untuk mendapatkan Riwayat dengan status 'selesai'
+  Stream<List<Riwayat>> getAllCompletedProducts() {
+    return FirebaseFirestore.instance
+        .collection('Riwayat')
+        .where('status', isEqualTo: 'selesai') // Tambahkan filter status 'selesai'
+        .snapshots()
+        .map((snapshot) => 
+            snapshot.docs.map((doc) => Riwayat.fromJson(doc.data())).toList());
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

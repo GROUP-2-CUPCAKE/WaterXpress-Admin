@@ -46,24 +46,53 @@ class _HomeViewState extends State<HomeView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Tambahkan ini untuk memisahkan elemen
                       children: [
-                        CircleAvatar(
-                          radius: 20, // Adjusted to make the circle smaller
-                          backgroundColor: Colors.white,
-                          child: Icon(
-                            Icons.account_circle,
-                            size: 40, // Adjusted icon size
-                            color: Color(0xFF0288D1),
-                          ),
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.account_circle,
+                                size: 40,
+                                color: Color(0xFF0288D1),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              'WaterXpress',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 10),
-                        Text(
-                          'WaterXpress',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                        // Tambahkan PopupMenuButton di sini
+                        PopupMenuButton<String>(
+                          icon: Icon(Icons.more_vert, color: Colors.white),
+                          color: Colors.white,
+                          onSelected: (value) {
+                            if (value == 'logout') {
+                              // Panggil method logout dari HomeController
+                              final HomeController controller = Get.find<HomeController>();
+                              controller.logout();
+                            }
+                          },
+                          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                            const PopupMenuItem<String>(
+                              value: 'logout',
+                              child: Row(
+                                children: [
+                                  Icon(Icons.logout, color: Colors.red),
+                                  SizedBox(width: 13),
+                                  Text('Logout'),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

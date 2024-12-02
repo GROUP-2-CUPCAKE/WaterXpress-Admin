@@ -73,11 +73,21 @@ class EditProdukController extends GetxController {
 
       isLoading.value = false;
       Get.back(); // Kembali ke halaman sebelumnya
-      Get.snackbar('Berhasil', 'Produk berhasil diupdate');
-    } catch (e) {
-      isLoading.value = false;
-      Get.snackbar('Error', 'Gagal update produk: ${e.toString()}');
-    }
+      Get.snackbar(
+        'Berhasil', 
+        'Produk berhasil diupdate',
+        backgroundColor: Colors.white,
+        colorText: Color(0xFF0288D1),
+      );
+      } catch (e) {
+        isLoading.value = false;
+        Get.snackbar(
+          'Error', 
+          'Gagal update produk: ${e.toString()}',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
   }
 
   @override
