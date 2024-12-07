@@ -46,100 +46,100 @@ class EditProdukView extends StatelessWidget {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  controller.selectedImage.value != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xFF40C4FF).withOpacity(0.5),
-                                  spreadRadius: 2,
-                                  blurRadius: 8,
-                                ),
-                              ],
-                            ),
-                            child: Image.file(
-                              controller.selectedImage.value!,
-                              height: 200,
-                              width: 300,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        )
-                      : (controller.existingImageUrl.value.isNotEmpty
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0xFF40C4FF).withOpacity(0.5),
-                                      spreadRadius: 2,
-                                      blurRadius: 8,
-                                    ),
-                                  ],
-                                ),
-                                child: CachedNetworkImage(
-                                  imageUrl: controller.existingImageUrl.value,
-                                  height: 200,
-                                  width: 300,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => 
-                                      Center(child: CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) => 
-                                      Icon(Icons.error, size: 50),
-                                ),
+                  Expanded( // Menggunakan Expanded agar menyesuaikan dengan lebar layar
+                    child: controller.selectedImage.value != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF40C4FF).withOpacity(0.5),
+                                    spreadRadius: 2,
+                                    blurRadius: 8,
+                                  ),
+                                ],
                               ),
-                            )
-                          : GestureDetector(
-                              onTap: () => controller.pickImage(),
-                              child: Container(
+                              child: Image.file(
+                                controller.selectedImage.value!,
                                 height: 200,
-                                width: 300,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.blueAccent.withOpacity(0.2),
-                                      spreadRadius: 2,
-                                      blurRadius: 8,
-                                    ),
-                                  ],
-                                ),
-                                child: const Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.add_a_photo,
-                                        size: 40,
-                                        color: Colors.black54,
-                                      ),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        "Tambah Foto",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black54,
-                                        ),
+                                width: double.infinity, // Menyesuaikan lebar layar
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                        : (controller.existingImageUrl.value.isNotEmpty
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0xFF40C4FF).withOpacity(0.5),
+                                        spreadRadius: 2,
+                                        blurRadius: 8,
                                       ),
                                     ],
                                   ),
+                                  child: CachedNetworkImage(
+                                    imageUrl: controller.existingImageUrl.value,
+                                    height: 200,
+                                    width: double.infinity, // Menyesuaikan lebar layar
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) =>
+                                        Center(child: CircularProgressIndicator()),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error, size: 50),
+                                  ),
                                 ),
-                              ),
-                            )),
-                  controller.selectedImage.value != null || 
-                          controller.existingImageUrl.value.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.red),
-                          onPressed: () {
-                            controller.selectedImage.value = null;
-                            controller.existingImageUrl.value = '';
-                          },
-                        )
-                      : const SizedBox(),
+                              )
+                            : GestureDetector(
+                                onTap: () => controller.pickImage(),
+                                child: Container(
+                                  height: 200,
+                                  width: double.infinity, // Menyesuaikan lebar layar
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.blueAccent.withOpacity(0.2),
+                                        spreadRadius: 2,
+                                        blurRadius: 8,
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.add_a_photo,
+                                          size: 40,
+                                          color: Colors.black54,
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text(
+                                          "Tambah Foto",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black54,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )),
+                  ),
+                  if (controller.selectedImage.value != null || controller.existingImageUrl.value.isNotEmpty)
+                    IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.blue),
+                      onPressed: () {
+                        controller.selectedImage.value = null;
+                        controller.existingImageUrl.value = '';
+                      },
+                    ),
                 ],
               ),
               const SizedBox(height: 20),
@@ -209,7 +209,7 @@ class EditProdukView extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-                            Container(
+              Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
