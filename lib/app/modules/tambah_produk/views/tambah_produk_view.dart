@@ -37,79 +37,85 @@ class TambahProdukView extends GetView<TambahProdukController> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  controller.image.value.path != ""
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      const Color(0xFF40C4FF).withOpacity(0.5),
-                                  spreadRadius: 2,
-                                  blurRadius: 8,
-                                ),
-                              ],
-                            ),
-                            child: Image.file(
-                              File(controller.image.value.path),
-                              height: 200,
-                              width: 300,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        )
-                      : GestureDetector(
-                          onTap: () async {
-                            await controller.getImage(true);
-                          },
-                          child: Container(
-                            height: 200,
-                            width: 300,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
+                  Stack(
+                    children: [
+                      controller.image.value.path != ""
+                          ? ClipRRect(
                               borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.blueAccent.withOpacity(0.2),
-                                  spreadRadius: 2,
-                                  blurRadius: 8,
-                                ),
-                              ],
-                            ),
-                            child: const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.add_a_photo,
-                                    size: 40,
-                                    color: Colors.black54,
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    "Tambah Foto",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black54,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF40C4FF)
+                                          .withOpacity(0.5),
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
                                     ),
+                                  ],
+                                ),
+                                child: Image.file(
+                                  File(controller.image.value.path),
+                                  height: 200,
+                                  width: MediaQuery.of(context).size.width - 32, 
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () async {
+                                await controller.getImage(true);
+                              },
+                              child: Container(
+                                height: 200,
+                                width: MediaQuery.of(context).size.width - 32, 
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.blueAccent.withOpacity(0.2),
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                    ),
+                                  ],
+                                ),
+                                child: const Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.add_a_photo,
+                                        size: 40,
+                                        color: Colors.black54,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        "Tambah Foto",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black54,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
+                      Obx(
+                        () => Positioned(
+                          right: 8,
+                          top: 8,
+                          child: controller.image.value.path != ""
+                              ? IconButton(
+                                  icon: const Icon(Icons.delete, color: Colors.blue),
+                                  onPressed: () async {
+                                    controller.image.value = XFile("");
+                                  },
+                                )
+                              : const SizedBox(),
                         ),
-                  Obx(
-                    () => Center(
-                      child: controller.image.value.path != ""
-                          ? IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () async {
-                                controller.image.value = XFile("");
-                              },
-                            )
-                          : const SizedBox(),
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
