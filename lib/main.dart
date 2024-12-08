@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             return ScreenUtilInit(
-              designSize: const Size(375, 812), // Ukuran desain (misalnya iPhone X)
+              designSize: const Size(375, 812),
               minTextAdapt: true,
               splitScreenMode: true,
               builder: (context, child) {

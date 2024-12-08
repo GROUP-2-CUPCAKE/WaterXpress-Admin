@@ -12,6 +12,8 @@ import '../modules/riwayat_pesanan/bindings/riwayat_pesanan_binding.dart';
 import '../modules/riwayat_pesanan/views/riwayat_pesanan_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
 import '../modules/splashscreen/views/splashscreen_view.dart';
+import '../modules/status_pesanan/bindings/status_pesanan_binding.dart';
+import '../modules/status_pesanan/views/status_pesanan_view.dart';
 import '../modules/tambah_produk/bindings/tambah_produk_binding.dart';
 import '../modules/tambah_produk/views/tambah_produk_view.dart';
 
@@ -57,6 +59,11 @@ class AppPages {
       name: _Paths.RIWAYAT_PESANAN,
       page: () => const RiwayatPesananView(),
       binding: RiwayatPesananBinding(),
+    ),
+    GetPage(
+      name: _Paths.STATUS_PESANAN,
+      page: () => const StatusPesananView(),
+      binding: StatusPesananBinding(),
     ),
   ];
 }

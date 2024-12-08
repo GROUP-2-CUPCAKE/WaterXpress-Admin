@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import '../controllers/konfirmasi_pesanan_controller.dart';
 import 'package:progress_tracker/progress_tracker.dart';
 import 'package:waterxpress_admin/app/routes/app_pages.dart';
+import 'package:waterxpress_admin/app/data/Pesanan.dart';
+import '../controllers/konfirmasi_pesanan_controller.dart';
 
 class KonfirmasiPesananView extends StatefulWidget {
   const KonfirmasiPesananView({Key? key}) : super(key: key);
@@ -12,350 +12,301 @@ class KonfirmasiPesananView extends StatefulWidget {
   _KonfirmasiPesananViewState createState() => _KonfirmasiPesananViewState();
 }
 
+  // Fungsi helper untuk memformat list produk
+  String _formatProdukList(List<dynamic>? produk) {
+    if (produk == null || produk.isEmpty) {
+      return 'Tidak ada produk';
+    }
+
+    // Map untuk menyimpan jumlah setiap produk
+    Map<String, int> produkCount = {};
+
+    // Hitung jumlah setiap produk
+    for (var item in produk) {
+      if (item is Map<String, dynamic>) {
+        String namaProduk = item['nama'] ?? 'Produk Tidak Dikenal';
+        int kuantitas = item['kuantitas'] ?? 0;
+        
+        produkCount[namaProduk] = (produkCount[namaProduk] ?? 0) + kuantitas;
+      }
+    }
+
+    // Buat string dengan format "namaProduk(kuantitas)"
+    return produkCount.entries
+        .map((entry) => '${entry.value} ${entry.key}')
+        .join(', ');
+  }
 class _KonfirmasiPesananViewState extends State<KonfirmasiPesananView> {
-  int _currentIndex = 1;
+  late Future<Pesanan?> pesananDetail;
+  final KonfirmasiPesananController controller = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    // Ambil orderId dari argumen yang dikirim
+    final String orderId = Get.arguments as String;
+    pesananDetail = controller.getPesananById(orderId);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final KonfirmasiPesananController controller = Get.put(KonfirmasiPesananController());
-
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Status Pesanan'),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        foregroundColor: Colors.white,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF40C4FF), Color(0xFF0288D1)],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Card(
-              color: const Color.fromARGB(255, 237, 246, 255),
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'ID :',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        const Text(
-                          'Nama Pengguna :',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        const Text(
-                          'Alamat :',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        const Text(
-                          'Ongkir Berdasarkan Jarak :',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black45,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              height: 35,
-                              width: 150,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF40C4FF).withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 8.0),
-                                  child: Center(
-                                    child: Text(
-                                      'Rp1.000,00',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.edit,
-                                      color: Colors.redAccent),
-                                ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.check_box,
-                                      color: Colors.green),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const Divider(
-                      color: Colors.grey,
-                      thickness: 1,
-                    ),
-                    const Text(
-                      'KONFIRMASI PEMESANAN',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Obx(
-                            () => ProgressTracker(
-                              currentIndex: controller.index.value,
-                              statusList: controller.statusList,
-                              activeColor: Colors.green,
-                              inActiveColor: Colors.grey,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          height: 40,
-                          width: 100,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xFF40C4FF),
-                                  Color(0xFF0288D1),
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 5),
-                                ),
-                              ],
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.transparent,
-                                shadowColor: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                              ),
-                              child: const Text(
-                                'Next',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              onPressed: controller.index.value !=
-                                      controller.statusList.length - 1
-                                  ? controller.nextButton
-                                  : null,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.white,
-        height: 57.0,
-        items: const <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.home, size: 28, color: Colors.white),
-              Text(
-                'Home',
-                style: TextStyle(fontSize: 11, color: Colors.white),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.check_circle, size: 28, color: Colors.white),
-              Text(
-                'Konfir',
-                style: TextStyle(fontSize: 11, color: Colors.white),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.history, size: 28, color: Colors.white),
-              Text(
-                'Riwayat',
-                style: TextStyle(fontSize: 11, color: Colors.white),
-              ),
-            ],
-          ),
-        ],
-        index: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+      appBar: _buildAppBar(),
+      body: _buildBody(),
+    );
+  }
 
-          // Navigasi ke halaman baru
-          switch (index) {
-            case 0:
-              Get.toNamed(Routes.HOME);
-              break;
-            case 1:
-              Get.toNamed(Routes.KONFIRMASI_PESANAN);
-              break;
-            case 2:
-              Get.toNamed(Routes.RIWAYAT_PESANAN);
-              break;
-          }
-        },
-        color: const Color(0xFF0288D1),
-        buttonBackgroundColor: const Color(0xFF40C4FF),
-        animationDuration: const Duration(milliseconds: 300),
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: const Text('Status Pesanan'),
+      automaticallyImplyLeading: true,
+      centerTitle: true,
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF40C4FF), Color(0xFF0288D1)],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+        ),
       ),
     );
   }
-}
 
-// Tambahkan kelas KonfirmasiPesananContent
-class KonfirmasiPesananContent extends StatelessWidget {
-  const KonfirmasiPesananContent({Key? key}) : super(key: key);
+  Widget _buildBody() {
+    return FutureBuilder<Pesanan?>(
+      future: pesananDetail,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data == null) {
+          return const Center(child: Text('Pesanan tidak ditemukan'));
+        }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Konfirmasi Pesanan',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF0288D1),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Apakah Anda yakin ingin mengkonfirmasi pesanan ini?',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            // Aksi untuk membatalkan konfirmasi
-                            Get.back();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: const Text('Batal'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Aksi untuk mengkonfirmasi pesanan
-                            // Tambahkan logika konfirmasi di sini
-                            Get.snackbar(
-                              'Berhasil',
-                              'Pesanan berhasil dikonfirmasi',
-                              snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: Colors.green,
-                              colorText: Colors.white,
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: const Text('Konfirmasi'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+        final pesanan = snapshot.data!;
+        return _buildPesananDetail(pesanan);
+      },
+    );
+  }
+
+  Widget _buildPesananDetail(Pesanan pesanan) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          Card(
+            color: const Color.fromARGB(255, 237, 246, 255),
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildPesananInfo(pesanan),
+                  const Divider(color: Colors.grey, thickness: 1),
+                  _buildStatusTracker(),
+                  _buildNextButton(pesanan),
+                ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPesananInfo(Pesanan pesanan) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('ID: ${pesanan.id}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 5),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Pembeli : ', 
+                style: TextStyle(
+                  color: Colors.black45, 
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: pesanan.email ?? 'Email tidak tersedia', 
+                style: TextStyle(
+                  color: Colors.black, 
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 5),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Pesanan: ', 
+                style: TextStyle(
+                  color: Colors.black45,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: _formatProdukList(pesanan.produk), 
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 5),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Alamat   : ', 
+                style: TextStyle(
+                  color: Colors.black45, 
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: pesanan.alamat ?? 'Alamat tidak tersedia', 
+                style: TextStyle(
+                  color: Colors.black, 
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 5),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Ongkir: ', 
+                style: TextStyle(
+                  color: Colors.black45,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text:  'Rp${pesanan.ongkir}', 
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 5),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Total   : ', 
+                style: TextStyle(
+                  color: Colors.black45, 
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+               text:  'Rp${pesanan.total}',  
+                style: TextStyle(
+                  color: Colors.black, 
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+       ],
+    );
+  }
+
+  Widget _buildStatusTracker() {
+    return Column(
+      children: [
+        const Text('KONFIRMASI PEMESANAN', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 16),
+        Obx(
+          () => ProgressTracker(
+            currentIndex: controller.index.value,
+            statusList: controller.statusList,
+            activeColor: Colors.green,
+            inActiveColor: Colors.grey,
+          ),
+        ),
+        const SizedBox(height: 20),
+      ],
+    );
+  }
+
+  Widget _buildNextButton(Pesanan pesanan) {
+    return SizedBox(
+      height: 40,
+      width: 100,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF40C4FF), Color(0xFF0288D1)],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
           ],
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Obx(
+          () => ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            onPressed: controller.index.value != controller.statusList.length - 1
+                ? () {
+                  print(pesanan.id);
+                    controller.nextButton();
+                    controller.updateStatusPesanan(
+                      pesanan.id, 
+                      controller.statusList[controller.index.value].name
+                    );
+                  }
+                : null,
+            child: const Text(
+              'Next',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
       ),
     );

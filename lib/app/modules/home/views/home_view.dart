@@ -24,6 +24,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final HomeController controller = Get.find<HomeController>();
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -105,6 +107,7 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
                     const SizedBox(height: 12),
+                    
                     // Row with "Pemasukan" and "Rp50.000,00"
                     Container(
                       decoration: BoxDecoration(
@@ -123,13 +126,42 @@ class _HomeViewState extends State<HomeView> {
                               color: Colors.black,
                             ),
                           ),
-                          Text(
-                            'Rp50.000,00',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF0288D1),
-                            ),
+                       // Di dalam build method
+                          StreamBuilder<double>(
+                            stream: controller.calculateTotalPemasukan(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return Text(
+                                  'Loading...',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF0288D1),
+                                  ),
+                                );
+                              }
+
+                              if (snapshot.hasError) {
+                                return Text(
+                                  'Error',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                  ),
+                                );
+                              }
+
+                              double totalPemasukan = snapshot.data ?? 0;
+                              return Text(
+                                'Rp${controller.formatCurrency(totalPemasukan)}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF0288D1),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -209,7 +241,7 @@ class _HomeViewState extends State<HomeView> {
               Get.toNamed(Routes.HOME);
               break;
             case 1:
-              Get.toNamed(Routes.KONFIRMASI_PESANAN);
+              Get.toNamed(Routes.STATUS_PESANAN);
               break;
             case 2:
               Get.toNamed(Routes.RIWAYAT_PESANAN);
