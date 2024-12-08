@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:waterxpress_admin/app/modules/riwayat_pesanan/controllers/riwayat_pesanan_controller.dart';
-import 'package:waterxpress_admin/app/data/Riwayat.dart';
+import 'package:waterxpress_admin/app/data/Pesanan.dart';
 import 'package:waterxpress_admin/app/routes/app_pages.dart';
 import 'package:intl/intl.dart';
 
@@ -13,26 +13,43 @@ class RiwayatPesananView extends StatefulWidget {
   _RiwayatPesananViewState createState() => _RiwayatPesananViewState();
 }
 
+// Fungsi untuk memformat tanggal
+  String _formatTanggal(DateTime tanggalPesanan) {
+    return DateFormat('dd MMM yyyy HH:mm').format(tanggalPesanan);
+  }
+
+  // Fungsi helper untuk memformat list produk
+  String _formatProdukList(List<dynamic>? produk) {
+    if (produk == null || produk.isEmpty) {
+      return 'Tidak ada produk';
+    }
+
+    // Map untuk menyimpan jumlah setiap produk
+    Map<String, int> produkCount = {};
+
+    // Hitung jumlah setiap produk
+    for (var item in produk) {
+      if (item is Map<String, dynamic>) {
+        String namaProduk = item['nama'] ?? 'Produk Tidak Dikenal';
+        int kuantitas = item['kuantitas'] ?? 0;
+        
+        produkCount[namaProduk] = (produkCount[namaProduk] ?? 0) + kuantitas;
+      }
+    }
+
+    // Buat string dengan format "namaProduk(kuantitas)"
+    return produkCount.entries
+        .map((entry) => '${entry.value} ${entry.key}')
+        .join(', ');
+  }
+
+
 class _RiwayatPesananViewState extends State<RiwayatPesananView> {
   int _currentIndex = 2;
 
   // Fungsi untuk memformat tanggal
   String _formatTanggal(DateTime tanggal) {
     return DateFormat('dd MMM yyyy HH:mm').format(tanggal);
-  }
-
-  // Fungsi untuk mendapatkan warna status
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'selesai':
-        return Colors.green;
-      case 'proses':
-        return Colors.orange;
-      case 'dibatalkan':
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
   }
 
   @override
@@ -56,7 +73,7 @@ class _RiwayatPesananViewState extends State<RiwayatPesananView> {
           ),
         ),
       ),
-      body: StreamBuilder<List<Riwayat>>(
+      body: StreamBuilder<List<Pesanan>>(
         stream: controller.getAllCompletedProducts(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -103,7 +120,7 @@ class _RiwayatPesananViewState extends State<RiwayatPesananView> {
           return ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
-              Riwayat riwayat = snapshot.data![index];
+              Pesanan pesanan = snapshot.data![index];
               return Card(
                 color: const Color.fromARGB(255, 237, 246, 255),
                 elevation: 2,
@@ -120,25 +137,27 @@ class _RiwayatPesananViewState extends State<RiwayatPesananView> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'ID : ${riwayat.id}',
+                            'ID : ${pesanan.id}',
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             ),
                           ),
-                          Text(
-                            _formatTanggal(riwayat.tanggal),
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.black54,
+                           Text(
+                              pesanan.tanggalPesanan != null
+                                  ? _formatTanggal(pesanan.tanggalPesanan!)
+                                  : 'Tanggal tidak tersedia',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black54,
+                              ),
                             ),
-                          ),
                         ],
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Nama Pengguna : ${riwayat.nama}',
+                        'Nama Pengguna : ${pesanan.email}',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -146,7 +165,7 @@ class _RiwayatPesananViewState extends State<RiwayatPesananView> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        'Pesanan : ${riwayat.pesanan}',
+                        'Pesanan : ${_formatProdukList(pesanan.produk)}',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -162,7 +181,7 @@ class _RiwayatPesananViewState extends State<RiwayatPesananView> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        'Rp${NumberFormat('#,###').format(riwayat.total_harga)},00',
+                        'Rp${NumberFormat('#,###').format(pesanan.total)},00',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -224,7 +243,7 @@ class _RiwayatPesananViewState extends State<RiwayatPesananView> {
               Get.toNamed(Routes.HOME);
               break;
             case 1:
-              Get.toNamed(Routes.KONFIRMASI_PESANAN);
+              Get.toNamed(Routes.STATUS_PESANAN);
               break;
             case 2:
               Get.toNamed(Routes.RIWAYAT_PESANAN);

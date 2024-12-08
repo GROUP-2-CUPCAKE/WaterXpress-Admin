@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:waterxpress_admin/app/data/Produk.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:waterxpress_admin/app/modules/login/views/login_view.dart'; // Impor LoginView
 
 class HomeController extends GetxController {
@@ -44,5 +45,30 @@ class HomeController extends GetxController {
   void logout() async {
     await auth.signOut();
     Get.off(() => LoginView());
+  }
+
+  Stream<double> calculateTotalPemasukan() {
+    return FirebaseFirestore.instance
+        .collection('Pesanan')
+        .where('status', isEqualTo: 'Selesai')
+        .snapshots()
+        .map((querySnapshot) {
+      return querySnapshot.docs.fold(0.0, (total, doc) {
+        // Pastikan menggunakan tipe data yang sesuai
+        dynamic totalValue = doc.data()['total'];
+        double parsedTotal = totalValue is num ? totalValue.toDouble() : 0.0;
+        return total + parsedTotal;
+      });
+    });
+  }
+
+  // Method untuk memformat mata uang
+  String formatCurrency(double value) {
+    final formatter = NumberFormat.currency(
+      locale: 'id_ID', 
+      symbol: '', 
+      decimalDigits: 2
+    );
+    return formatter.format(value);
   }
 }

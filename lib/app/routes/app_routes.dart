@@ -11,6 +11,7 @@ abstract class Routes {
   static const EDIT_PRODUK = _Paths.EDIT_PRODUK;
   static const KONFIRMASI_PESANAN = _Paths.KONFIRMASI_PESANAN;
   static const RIWAYAT_PESANAN = _Paths.RIWAYAT_PESANAN;
+  static const STATUS_PESANAN = _Paths.STATUS_PESANAN;
 }
 
 abstract class _Paths {
@@ -23,4 +24,5 @@ abstract class _Paths {
   static const EDIT_PRODUK = '/edit-produk';
   static const KONFIRMASI_PESANAN = '/konfirmasi-pesanan';
   static const RIWAYAT_PESANAN = '/riwayat-pesanan';
+  static const STATUS_PESANAN = '/status-pesanan';
 }
