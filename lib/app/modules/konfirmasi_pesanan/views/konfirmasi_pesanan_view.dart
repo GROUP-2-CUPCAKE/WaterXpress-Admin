@@ -12,30 +12,31 @@ class KonfirmasiPesananView extends StatefulWidget {
   _KonfirmasiPesananViewState createState() => _KonfirmasiPesananViewState();
 }
 
-  // Fungsi helper untuk memformat list produk
-  String _formatProdukList(List<dynamic>? produk) {
-    if (produk == null || produk.isEmpty) {
-      return 'Tidak ada produk';
-    }
-
-    // Map untuk menyimpan jumlah setiap produk
-    Map<String, int> produkCount = {};
-
-    // Hitung jumlah setiap produk
-    for (var item in produk) {
-      if (item is Map<String, dynamic>) {
-        String namaProduk = item['nama'] ?? 'Produk Tidak Dikenal';
-        int kuantitas = item['kuantitas'] ?? 0;
-        
-        produkCount[namaProduk] = (produkCount[namaProduk] ?? 0) + kuantitas;
-      }
-    }
-
-    // Buat string dengan format "namaProduk(kuantitas)"
-    return produkCount.entries
-        .map((entry) => '${entry.value} ${entry.key}')
-        .join(', ');
+// Fungsi helper untuk memformat list produk
+String _formatProdukList(List<dynamic>? produk) {
+  if (produk == null || produk.isEmpty) {
+    return 'Tidak ada produk';
   }
+
+  // Map untuk menyimpan jumlah setiap produk
+  Map<String, int> produkCount = {};
+
+  // Hitung jumlah setiap produk
+  for (var item in produk) {
+    if (item is Map<String, dynamic>) {
+      String namaProduk = item['nama'] ?? 'Produk Tidak Dikenal';
+      int kuantitas = item['kuantitas'] ?? 0;
+
+      produkCount[namaProduk] = (produkCount[namaProduk] ?? 0) + kuantitas;
+    }
+  }
+
+  // Buat string dengan format "namaProduk(kuantitas)"
+  return produkCount.entries
+      .map((entry) => '${entry.value} ${entry.key}')
+      .join(', ');
+}
+
 class _KonfirmasiPesananViewState extends State<KonfirmasiPesananView> {
   late Future<Pesanan?> pesananDetail;
   final KonfirmasiPesananController controller = Get.find();
@@ -125,35 +126,14 @@ class _KonfirmasiPesananViewState extends State<KonfirmasiPesananView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('ID: ${pesanan.id}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text('ID: ${pesanan.id}',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         const SizedBox(height: 5),
         RichText(
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'Pembeli : ', 
-                style: TextStyle(
-                  color: Colors.black45, 
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextSpan(
-                text: pesanan.email ?? 'Email tidak tersedia', 
-                style: TextStyle(
-                  color: Colors.black, 
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 5),
-        RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'Pesanan: ', 
+                text: 'Pembeli : ',
                 style: TextStyle(
                   color: Colors.black45,
                   fontSize: 15,
@@ -161,7 +141,7 @@ class _KonfirmasiPesananViewState extends State<KonfirmasiPesananView> {
                 ),
               ),
               TextSpan(
-                text: _formatProdukList(pesanan.produk), 
+                text: pesanan.email ?? 'Email tidak tersedia',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 15,
@@ -175,29 +155,7 @@ class _KonfirmasiPesananViewState extends State<KonfirmasiPesananView> {
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'Alamat   : ', 
-                style: TextStyle(
-                  color: Colors.black45, 
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextSpan(
-                text: pesanan.alamat ?? 'Alamat tidak tersedia', 
-                style: TextStyle(
-                  color: Colors.black, 
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 5),
-        RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'Ongkir: ', 
+                text: 'Pesanan: ',
                 style: TextStyle(
                   color: Colors.black45,
                   fontSize: 15,
@@ -205,7 +163,7 @@ class _KonfirmasiPesananViewState extends State<KonfirmasiPesananView> {
                 ),
               ),
               TextSpan(
-                text:  'Rp${pesanan.ongkir}', 
+                text: _formatProdukList(pesanan.produk),
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 15,
@@ -219,31 +177,76 @@ class _KonfirmasiPesananViewState extends State<KonfirmasiPesananView> {
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'Total   : ', 
+                text: 'Alamat   : ',
                 style: TextStyle(
-                  color: Colors.black45, 
+                  color: Colors.black45,
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               TextSpan(
-               text:  'Rp${pesanan.total}',  
+                text: pesanan.alamat ?? 'Alamat tidak tersedia',
                 style: TextStyle(
-                  color: Colors.black, 
+                  color: Colors.black,
                   fontSize: 15,
                 ),
               ),
             ],
           ),
         ),
-       ],
+        const SizedBox(height: 5),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Ongkir: ',
+                style: TextStyle(
+                  color: Colors.black45,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: 'Rp${pesanan.ongkir}',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 5),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Total   : ',
+                style: TextStyle(
+                  color: Colors.black45,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: 'Rp${pesanan.total}',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildStatusTracker() {
     return Column(
       children: [
-        const Text('KONFIRMASI PEMESANAN', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        const Text('KONFIRMASI PEMESANAN',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         const SizedBox(height: 16),
         Obx(
           () => ProgressTracker(
@@ -288,16 +291,26 @@ class _KonfirmasiPesananViewState extends State<KonfirmasiPesananView> {
                 borderRadius: BorderRadius.circular(30),
               ),
             ),
-            onPressed: controller.index.value != controller.statusList.length - 1
-                ? () {
-                  print(pesanan.id);
-                    controller.nextButton();
-                    controller.updateStatusPesanan(
-                      pesanan.id, 
-                      controller.statusList[controller.index.value].name
-                    );
-                  }
-                : null,
+            onPressed:
+                // Tambahkan null check untuk pesanan.id
+                pesanan.id != null &&
+                        controller.index.value !=
+                            controller.statusList.length - 1
+                    ? () {
+                        print(pesanan.id);
+                        controller.nextButton(pesanan.id!);
+                      }
+                    : null,
+            // onPressed: controller.index.value != controller.statusList.length - 1
+            // ? () {
+            // print(pesanan.id);
+            // controller.nextButton(pesanan.id);
+            // controller.updateStatusPesanan(
+            // pesanan.id,
+            // controller.statusList[controller.index.value].name
+            // );
+            // }
+            // : null,
             child: const Text(
               'Next',
               style: TextStyle(
