@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+// import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:waterxpress_admin/app/modules/status_pesanan/controllers/status_pesanan_controller.dart';
 import 'package:waterxpress_admin/app/data/Pesanan.dart';
 import 'package:waterxpress_admin/app/routes/app_pages.dart';
@@ -14,7 +14,7 @@ class StatusPesananView extends StatefulWidget {
 }
 
 class _StatusPesananViewState extends State<StatusPesananView> {
-  int _currentIndex = 1;
+  // int _currentIndex = 1;
 
   // Fungsi untuk memformat tanggal
   String _formatTanggal(DateTime tanggalPesanan) {
@@ -35,7 +35,7 @@ class _StatusPesananViewState extends State<StatusPesananView> {
       if (item is Map<String, dynamic>) {
         String namaProduk = item['nama'] ?? 'Produk Tidak Dikenal';
         int kuantitas = item['kuantitas'] ?? 0;
-        
+
         produkCount[namaProduk] = (produkCount[namaProduk] ?? 0) + kuantitas;
       }
     }
@@ -62,7 +62,8 @@ class _StatusPesananViewState extends State<StatusPesananView> {
 
   @override
   Widget build(BuildContext context) {
-    final StatusPesananController controller = Get.put(StatusPesananController());
+    final StatusPesananController controller =
+        Get.put(StatusPesananController());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -132,10 +133,9 @@ class _StatusPesananViewState extends State<StatusPesananView> {
               return GestureDetector(
                 onTap: () {
                   // Navigasi ke halaman konfirmasi pesanan dengan membawa ID pesanan
-                  Get.toNamed(
-                    Routes.KONFIRMASI_PESANAN, 
-                    arguments: pesanan.id // Kirim ID pesanan sebagai argumen
-                  );
+                  Get.toNamed(Routes.KONFIRMASI_PESANAN,
+                      arguments: pesanan.id // Kirim ID pesanan sebagai argumen
+                      );
                 },
                 child: Card(
                   color: const Color.fromARGB(255, 237, 246, 255),
@@ -176,29 +176,7 @@ class _StatusPesananViewState extends State<StatusPesananView> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Pembeli : ', 
-                                style: TextStyle(
-                                  color: Colors.black45, 
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              TextSpan(
-                                text: pesanan.email ?? 'Email tidak tersedia', 
-                                style: TextStyle(
-                                  color: Colors.black, 
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Pesanan: ', 
+                                text: 'Pembeli : ',
                                 style: TextStyle(
                                   color: Colors.black45,
                                   fontSize: 15,
@@ -206,7 +184,7 @@ class _StatusPesananViewState extends State<StatusPesananView> {
                                 ),
                               ),
                               TextSpan(
-                                text: _formatProdukList(pesanan.produk), 
+                                text: pesanan.email ?? 'Email tidak tersedia',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 15,
@@ -220,17 +198,39 @@ class _StatusPesananViewState extends State<StatusPesananView> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Alamat   : ', 
+                                text: 'Pesanan: ',
                                 style: TextStyle(
-                                  color: Colors.black45, 
+                                  color: Colors.black45,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               TextSpan(
-                                text: pesanan.alamat ?? 'Alamat tidak tersedia', 
+                                text: _formatProdukList(pesanan.produk),
                                 style: TextStyle(
-                                  color: Colors.black, 
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Alamat   : ',
+                                style: TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: pesanan.alamat ?? 'Alamat tidak tersedia',
+                                style: TextStyle(
+                                  color: Colors.black,
                                   fontSize: 15,
                                 ),
                               ),
@@ -263,64 +263,6 @@ class _StatusPesananViewState extends State<StatusPesananView> {
           );
         },
       ),
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.white,
-        height: 57.0,
-        items: const <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.home, size: 28, color: Colors.white),
-              Text(
-                'Home',
-                style: TextStyle(fontSize: 11, color: Colors.white),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.check_circle, size: 28, color: Colors.white),
-              Text(
-                'Konfir',
-                style: TextStyle(fontSize: 11, color: Colors.white),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.history, size: 28, color: Colors.white),
-              Text(
-                'Riwayat',
-                style: TextStyle(fontSize: 11, color: Colors.white),
-              ),
-            ],
-          ),
-        ],
-        index: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-
-          // Navigasi ke halaman baru
-          switch (index) {
-            case 0:
-              Get.toNamed(Routes.HOME);
-              break;
-            case 1:
-              Get.toNamed(Routes.STATUS_PESANAN);
-              break;
-            case 2:
-              Get.toNamed(Routes.RIWAYAT_PESANAN);
-              break;
-          }
-        },
-        color: const Color(0xFF0288D1),
-        buttonBackgroundColor: const Color(0xFF40C4FF),
-        animationDuration: const Duration(milliseconds: 300),
-      ),
     );
   }
 }
@@ -344,9 +286,7 @@ extension PesananExtension on Pesanan {
   // Method untuk format mata uang
   String get formattedTotal {
     return NumberFormat.currency(
-      locale: 'id_ID', 
-      symbol: 'Rp', 
-      decimalDigits: 0
-    ).format(total);
+            locale: 'id_ID', symbol: 'Rp', decimalDigits: 0)
+        .format(total);
   }
 }

@@ -34,7 +34,7 @@ class SplashscreenView extends StatelessWidget {
             children: [
               // Expanded to push content to the center
               const Spacer(flex: 2),
-              
+
               // Centered CircleAvatar
               Center(
                 child: CircleAvatar(
@@ -42,19 +42,19 @@ class SplashscreenView extends StatelessWidget {
                   backgroundImage: AssetImage('assets/images/logo2.png'),
                 ),
               ),
-              
+
               const SizedBox(height: 30),
-              
+
               // Centered Progress Indicator
               const Center(
                 child: CircularProgressIndicator.adaptive(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               ),
-              
+
               // Expanded to push content to the bottom
               const Spacer(flex: 2),
-              
+
               // Centered Text
               const Padding(
                 padding: EdgeInsets.only(bottom: 20.0),

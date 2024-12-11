@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+// import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:waterxpress_admin/app/modules/riwayat_pesanan/controllers/riwayat_pesanan_controller.dart';
 import 'package:waterxpress_admin/app/data/Pesanan.dart';
 import 'package:waterxpress_admin/app/routes/app_pages.dart';
@@ -14,38 +14,37 @@ class RiwayatPesananView extends StatefulWidget {
 }
 
 // Fungsi untuk memformat tanggal
-  String _formatTanggal(DateTime tanggalPesanan) {
-    return DateFormat('dd MMM yyyy HH:mm').format(tanggalPesanan);
+String _formatTanggal(DateTime tanggalPesanan) {
+  return DateFormat('dd MMM yyyy HH:mm').format(tanggalPesanan);
+}
+
+// Fungsi helper untuk memformat list produk
+String _formatProdukList(List<dynamic>? produk) {
+  if (produk == null || produk.isEmpty) {
+    return 'Tidak ada produk';
   }
 
-  // Fungsi helper untuk memformat list produk
-  String _formatProdukList(List<dynamic>? produk) {
-    if (produk == null || produk.isEmpty) {
-      return 'Tidak ada produk';
+  // Map untuk menyimpan jumlah setiap produk
+  Map<String, int> produkCount = {};
+
+  // Hitung jumlah setiap produk
+  for (var item in produk) {
+    if (item is Map<String, dynamic>) {
+      String namaProduk = item['nama'] ?? 'Produk Tidak Dikenal';
+      int kuantitas = item['kuantitas'] ?? 0;
+
+      produkCount[namaProduk] = (produkCount[namaProduk] ?? 0) + kuantitas;
     }
-
-    // Map untuk menyimpan jumlah setiap produk
-    Map<String, int> produkCount = {};
-
-    // Hitung jumlah setiap produk
-    for (var item in produk) {
-      if (item is Map<String, dynamic>) {
-        String namaProduk = item['nama'] ?? 'Produk Tidak Dikenal';
-        int kuantitas = item['kuantitas'] ?? 0;
-        
-        produkCount[namaProduk] = (produkCount[namaProduk] ?? 0) + kuantitas;
-      }
-    }
-
-    // Buat string dengan format "namaProduk(kuantitas)"
-    return produkCount.entries
-        .map((entry) => '${entry.value} ${entry.key}')
-        .join(', ');
   }
 
+  // Buat string dengan format "namaProduk(kuantitas)"
+  return produkCount.entries
+      .map((entry) => '${entry.value} ${entry.key}')
+      .join(', ');
+}
 
 class _RiwayatPesananViewState extends State<RiwayatPesananView> {
-  int _currentIndex = 2;
+  // int _currentIndex = 2;
 
   // Fungsi untuk memformat tanggal
   String _formatTanggal(DateTime tanggal) {
@@ -54,7 +53,8 @@ class _RiwayatPesananViewState extends State<RiwayatPesananView> {
 
   @override
   Widget build(BuildContext context) {
-    final RiwayatPesananController controller = Get.put(RiwayatPesananController());
+    final RiwayatPesananController controller =
+        Get.put(RiwayatPesananController());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -144,15 +144,15 @@ class _RiwayatPesananViewState extends State<RiwayatPesananView> {
                               color: Colors.black,
                             ),
                           ),
-                           Text(
-                              pesanan.tanggalPesanan != null
-                                  ? _formatTanggal(pesanan.tanggalPesanan!)
-                                  : 'Tanggal tidak tersedia',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.black54,
-                              ),
+                          Text(
+                            pesanan.tanggalPesanan != null
+                                ? _formatTanggal(pesanan.tanggalPesanan!)
+                                : 'Tanggal tidak tersedia',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.black54,
                             ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 10),
@@ -190,69 +190,11 @@ class _RiwayatPesananViewState extends State<RiwayatPesananView> {
                       ),
                     ],
                   ),
-                  ),
-                );
+                ),
+              );
             },
           );
         },
-      ),
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.white,
-        height: 57.0,
-        items: const <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.home, size: 28, color: Colors.white),
-              Text(
-                'Home',
-                style: TextStyle(fontSize: 11, color: Colors.white),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.check_circle, size: 28, color: Colors.white),
-              Text(
-                'Konfir',
-                style: TextStyle(fontSize: 11, color: Colors.white),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.history, size: 28, color: Colors.white),
-              Text(
-                'Riwayat',
-                style: TextStyle(fontSize: 11, color: Colors.white),
-              ),
-            ],
-          ),
-        ],
-        index: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-
-          // Navigasi ke halaman baru
-          switch (index) {
-            case 0:
-              Get.toNamed(Routes.HOME);
-              break;
-            case 1:
-              Get.toNamed(Routes.STATUS_PESANAN);
-              break;
-            case 2:
-              Get.toNamed(Routes.RIWAYAT_PESANAN);
-              break;
-          }
-        },
-        color: const Color(0xFF0288D1),
-        buttonBackgroundColor: const Color(0xFF40C4FF),
-        animationDuration: const Duration(milliseconds: 300),
       ),
     );
   }
