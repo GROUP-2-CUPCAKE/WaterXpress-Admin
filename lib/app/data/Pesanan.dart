@@ -56,11 +56,11 @@ class Pesanan {
   // Metode statis untuk konversi tanggal
   static DateTime? _convertToDateTime(dynamic date) {
     if (date == null) return null;
-    
+
     if (date is DateTime) return date;
-    
+
     if (date is Timestamp) return date.toDate();
-    
+
     try {
       return DateTime.parse(date.toString());
     } catch (e) {
@@ -78,9 +78,8 @@ class Pesanan {
       'ongkir': ongkir ?? 0,
       'produk': produk ?? [],
       'subtotalProduk': subtotalProduk ?? 0,
-      'tanggalPesanan': tanggalPesanan != null 
-          ? Timestamp.fromDate(tanggalPesanan!) 
-          : null,
+      'tanggalPesanan':
+          tanggalPesanan != null ? Timestamp.fromDate(tanggalPesanan!) : null,
       'total': total ?? 0,
       'userId': userId ?? '',
       'status': status ?? 'Menunggu Konfirmasi',

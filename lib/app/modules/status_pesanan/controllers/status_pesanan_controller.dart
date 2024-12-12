@@ -3,18 +3,16 @@ import 'package:get/get.dart';
 import 'package:waterxpress_admin/app/data/Pesanan.dart';
 
 class StatusPesananController extends GetxController {
-
   // Referensi ke koleksi Pesanan di Firestore
   CollectionReference ref = FirebaseFirestore.instance.collection('Pesanan');
 
   // Stream untuk mendapatkan Pesanan dengan status 'selesai'
- Stream<List<Pesanan>> getAllCompletedProducts() {
+  Stream<List<Pesanan>> getAllCompletedProducts() {
     return FirebaseFirestore.instance
         .collection('Pesanan')
         .where('status', whereNotIn: ['Selesai'])
         .snapshots()
-        .map((snapshot) => 
-            snapshot.docs.map((doc) {
+        .map((snapshot) => snapshot.docs.map((doc) {
               var pesanan = Pesanan.fromMap(doc.data());
               pesanan.id = doc.id;
               return pesanan;
