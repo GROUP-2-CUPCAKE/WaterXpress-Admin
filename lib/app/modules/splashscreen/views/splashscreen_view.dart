@@ -10,7 +10,7 @@ class SplashscreenView extends StatelessWidget {
   Widget build(BuildContext context) {
     final authC = Get.find<LoginController>();
 
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 1), () {
       if (authC.isUserLoggedIn()) {
         Get.offAllNamed(Routes.HOME);
       } else {

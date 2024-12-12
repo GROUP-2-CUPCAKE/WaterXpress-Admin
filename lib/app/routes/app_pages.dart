@@ -42,17 +42,17 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TAMBAH_PRODUK,
-      page: () => TambahProdukView(),
+      page: () => const TambahProdukView(),
       binding: TambahProdukBinding(),
     ),
     GetPage(
       name: _Paths.EDIT_PRODUK,
-      page: () => EditProdukView(),
+      page: () => const EditProdukView(),
       binding: EditProdukBinding(),
     ),
     GetPage(
       name: _Paths.KONFIRMASI_PESANAN,
-      page: () => KonfirmasiPesananView(),
+      page: () => const KonfirmasiPesananView(),
       binding: KonfirmasiPesananBinding(),
     ),
     GetPage(

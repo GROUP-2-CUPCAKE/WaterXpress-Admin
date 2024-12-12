@@ -61,26 +61,12 @@ class LoginView extends GetView<LoginController> {
                           ],
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(50),
                           child: Image.asset(
                             'assets/images/logo.png',
                             fit: BoxFit.cover,
                           ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 8,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
                       ),
                     ),
                   ],
@@ -96,9 +82,9 @@ class LoginView extends GetView<LoginController> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 5,
-                      offset: Offset(0, 2),
+                      color: const Color(0xFF0288D1),
+                      blurRadius: 10,
+                      offset: Offset(5, 8),
                     ),
                   ],
                 ),
@@ -114,41 +100,31 @@ class LoginView extends GetView<LoginController> {
                         'Masuk dengan akun Anda!',
                         style: TextStyle(
                           fontSize: 18,
-                          color: Color(0xFF0288D1),
+                          color: Color(0xFF0277BD),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                     // Field Email
                     Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color.fromARGB(255, 192, 227, 244),
-                            Color.fromARGB(255, 144, 200, 233),
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
-                      ),
+                      decoration: textFieldDecoration(),
                       child: TextFormField(
                         controller: controller.emailController,
                         decoration: InputDecoration(
                           hintText: "Email",
                           hintStyle: const TextStyle(
-                            color: Color(0xFF0288D1),
+                            color: Color(0xFF37474F),
                             fontSize: 16,
                           ),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none,
                           ),
                           fillColor: Colors.transparent,
                           filled: true,
                           prefixIcon: const Icon(
                             Icons.email,
-                            color: Color(0xFF0288D1),
+                            color: Color(0xFF0277BD),
                           ),
                         ),
                       ),
@@ -156,17 +132,7 @@ class LoginView extends GetView<LoginController> {
                     const SizedBox(height: 15),
                     // Field Password
                     Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color.fromARGB(255, 192, 227, 244),
-                            Color.fromARGB(255, 144, 200, 233),
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
-                      ),
+                      decoration: textFieldDecoration(),
                       child: Obx(
                         () => TextFormField(
                           controller: controller.passwordController,
@@ -174,25 +140,25 @@ class LoginView extends GetView<LoginController> {
                           decoration: InputDecoration(
                             hintText: "Password",
                             hintStyle: const TextStyle(
-                              color: Color(0xFF0288D1),
+                              color: Color(0xFF37474F),
                               fontSize: 16,
                             ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(15),
                               borderSide: BorderSide.none,
                             ),
                             fillColor: Colors.transparent,
                             filled: true,
                             prefixIcon: const Icon(
-                              Icons.lock,
-                              color: Color(0xFF0288D1),
+                              Icons.key,
+                              color: Color(0xFF0277BD),
                             ),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 controller.obscureText.value
                                     ? Icons.visibility_off
                                     : Icons.visibility,
-                                color: const Color(0xFF0288D1),
+                                color: const Color(0xFF0277BD),
                               ),
                               onPressed: () => controller.togglePasswordView(),
                             ),
@@ -200,7 +166,7 @@ class LoginView extends GetView<LoginController> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 23),
                     // Tombol Login
                     SizedBox(
                       width: double.infinity,
@@ -216,23 +182,34 @@ class LoginView extends GetView<LoginController> {
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                           ),
-                          borderRadius: BorderRadius.circular(50),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 10,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(50),
-                          onTap: () => controller.login(
-                            controller.emailController.text,
-                            controller.passwordController.text,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                           ),
-                          child: const Center(
-                            child: Text(
-                              'Login',
-                              style: TextStyle(
+                          child: const Text(
+                            'Masuk',
+                            style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                                fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () => controller.login(
+                            controller.emailController.text,
+                            controller.passwordController.text,
                           ),
                         ),
                       ),
@@ -247,4 +224,25 @@ class LoginView extends GetView<LoginController> {
       ),
     );
   }
+}
+
+BoxDecoration textFieldDecoration() {
+  return BoxDecoration(
+    borderRadius: BorderRadius.circular(15),
+    gradient: const LinearGradient(
+      colors: [
+        Color(0xFFB3E5FC),
+        Color(0xFF81D4FA),
+      ],
+      begin: Alignment.centerLeft,
+      end: Alignment.centerRight,
+    ),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.2),
+        blurRadius: 10,
+        offset: const Offset(0, 4),
+      ),
+    ],
+  );
 }

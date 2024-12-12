@@ -46,7 +46,8 @@ class EditProdukView extends StatelessWidget {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  Expanded( // Menggunakan Expanded agar menyesuaikan dengan lebar layar
+                  Expanded(
+                    // Menggunakan Expanded agar menyesuaikan dengan lebar layar
                     child: controller.selectedImage.value != null
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(12),
@@ -54,7 +55,8 @@ class EditProdukView extends StatelessWidget {
                               decoration: BoxDecoration(
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(0xFF40C4FF).withOpacity(0.5),
+                                    color: const Color(0xFF40C4FF)
+                                        .withOpacity(0.5),
                                     spreadRadius: 2,
                                     blurRadius: 8,
                                   ),
@@ -63,7 +65,8 @@ class EditProdukView extends StatelessWidget {
                               child: Image.file(
                                 controller.selectedImage.value!,
                                 height: 200,
-                                width: double.infinity, // Menyesuaikan lebar layar
+                                width:
+                                    double.infinity, // Menyesuaikan lebar layar
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -75,7 +78,8 @@ class EditProdukView extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     boxShadow: [
                                       BoxShadow(
-                                        color: const Color(0xFF40C4FF).withOpacity(0.5),
+                                        color: const Color(0xFF40C4FF)
+                                            .withOpacity(0.5),
                                         spreadRadius: 2,
                                         blurRadius: 8,
                                       ),
@@ -84,10 +88,11 @@ class EditProdukView extends StatelessWidget {
                                   child: CachedNetworkImage(
                                     imageUrl: controller.existingImageUrl.value,
                                     height: 200,
-                                    width: double.infinity, // Menyesuaikan lebar layar
+                                    width: double
+                                        .infinity, // Menyesuaikan lebar layar
                                     fit: BoxFit.cover,
-                                    placeholder: (context, url) =>
-                                        Center(child: CircularProgressIndicator()),
+                                    placeholder: (context, url) => Center(
+                                        child: CircularProgressIndicator()),
                                     errorWidget: (context, url, error) =>
                                         const Icon(Icons.error, size: 50),
                                   ),
@@ -97,13 +102,15 @@ class EditProdukView extends StatelessWidget {
                                 onTap: () => controller.pickImage(),
                                 child: Container(
                                   height: 200,
-                                  width: double.infinity, // Menyesuaikan lebar layar
+                                  width: double
+                                      .infinity, // Menyesuaikan lebar layar
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(12),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.blueAccent.withOpacity(0.2),
+                                        color:
+                                            Colors.blueAccent.withOpacity(0.2),
                                         spreadRadius: 2,
                                         blurRadius: 8,
                                       ),
@@ -111,7 +118,8 @@ class EditProdukView extends StatelessWidget {
                                   ),
                                   child: const Center(
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.add_a_photo,
@@ -132,7 +140,8 @@ class EditProdukView extends StatelessWidget {
                                 ),
                               )),
                   ),
-                  if (controller.selectedImage.value != null || controller.existingImageUrl.value.isNotEmpty)
+                  if (controller.selectedImage.value != null ||
+                      controller.existingImageUrl.value.isNotEmpty)
                     IconButton(
                       icon: const Icon(Icons.delete, color: Colors.blue),
                       onPressed: () {
@@ -234,7 +243,7 @@ class EditProdukView extends StatelessWidget {
                   style: const TextStyle(color: Colors.black),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -243,16 +252,12 @@ class EditProdukView extends StatelessWidget {
                     if (controller.namaController.text.isEmpty ||
                         controller.hargaController.text.isEmpty ||
                         controller.stokController.text.isEmpty) {
-                      Get.snackbar(
-                        'Error', 
-                        'Lengkapi data terlebih dahulu',
-                        snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: Colors.red,
-                        colorText: Colors.white,
-                        borderRadius: 10,
-                        margin: const EdgeInsets.all(10),
-                        snackStyle: SnackStyle.FLOATING
-                      );
+                      Get.snackbar('Error', 'Lengkapi data terlebih dahulu',
+                          backgroundColor: const Color(0xFFFF5252),
+                          colorText: Colors.white,
+                          borderRadius: 10,
+                          margin: const EdgeInsets.all(10),
+                          snackStyle: SnackStyle.FLOATING);
                       return;
                     }
 
@@ -261,7 +266,7 @@ class EditProdukView extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     shadowColor: Colors.transparent,
                   ),
                   child: Ink(
@@ -276,19 +281,17 @@ class EditProdukView extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 16, horizontal: 20),
-                      child: Obx(() => 
-                        controller.isLoading.value
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
-                        : const Text(
-                            "Update Produk",
-                            style: TextStyle(
-                              color: Colors.white, 
-                              fontSize: 16
-                            ),
-                          ),
+                          vertical: 14, horizontal: 20),
+                      child: Obx(
+                        () => controller.isLoading.value
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text(
+                                "Update Produk",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
                       ),
                     ),
                   ),

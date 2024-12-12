@@ -56,7 +56,7 @@ class TambahProdukView extends GetView<TambahProdukController> {
                                 child: Image.file(
                                   File(controller.image.value.path),
                                   height: 200,
-                                  width: MediaQuery.of(context).size.width - 32, 
+                                  width: MediaQuery.of(context).size.width - 32,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -67,7 +67,7 @@ class TambahProdukView extends GetView<TambahProdukController> {
                               },
                               child: Container(
                                 height: 200,
-                                width: MediaQuery.of(context).size.width - 32, 
+                                width: MediaQuery.of(context).size.width - 32,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12),
@@ -107,7 +107,8 @@ class TambahProdukView extends GetView<TambahProdukController> {
                           top: 8,
                           child: controller.image.value.path != ""
                               ? IconButton(
-                                  icon: const Icon(Icons.delete, color: Colors.blue),
+                                  icon: const Icon(Icons.delete,
+                                      color: Colors.red),
                                   onPressed: () async {
                                     controller.image.value = XFile("");
                                   },
@@ -211,7 +212,7 @@ class TambahProdukView extends GetView<TambahProdukController> {
                   style: const TextStyle(color: Colors.black),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -221,7 +222,7 @@ class TambahProdukView extends GetView<TambahProdukController> {
                         controller.stokController.text.isEmpty ||
                         controller.image.value.path.isEmpty) {
                       Get.snackbar('Error', 'Lengkapi data terlebih dahulu',
-                          backgroundColor: Colors.red,
+                          backgroundColor: const Color(0xFFFF5252),
                           colorText: Colors.white,
                           borderRadius: 10,
                           margin: const EdgeInsets.all(10),
@@ -240,13 +241,13 @@ class TambahProdukView extends GetView<TambahProdukController> {
                         duration: const Duration(seconds: 3),
                         margin: const EdgeInsets.all(12),
                         backgroundColor: Colors.white,
-                        colorText: Color(0xFF0288D1),
+                        colorText: const Color(0xFF0288D1),
                       );
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     shadowColor: Colors.transparent,
                   ),
                   child: Ink(

@@ -20,7 +20,7 @@ class EditProdukController extends GetxController {
   Future<void> pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    
+
     if (pickedFile != null) {
       selectedImage.value = File(pickedFile.path);
     }
@@ -28,12 +28,13 @@ class EditProdukController extends GetxController {
 
   Future<void> loadProductDetails(String productId) async {
     try {
-      var productDoc = await _firestore.collection('Produk').doc(productId).get();
-      
+      var productDoc =
+          await _firestore.collection('Produk').doc(productId).get();
+
       namaController.text = productDoc['nama'];
       hargaController.text = productDoc['harga'].toString();
       stokController.text = productDoc['stok'].toString();
-      
+
       // Simpan URL gambar yang ada
       existingImageUrl.value = productDoc['images'] ?? '';
     } catch (e) {
@@ -42,8 +43,8 @@ class EditProdukController extends GetxController {
   }
 
   Future<void> updateProduct(String productId) async {
-    if (namaController.text.isEmpty || 
-        hargaController.text.isEmpty || 
+    if (namaController.text.isEmpty ||
+        hargaController.text.isEmpty ||
         stokController.text.isEmpty) {
       Get.snackbar('Error', 'Semua field harus diisi');
       return;
@@ -55,7 +56,9 @@ class EditProdukController extends GetxController {
 
       if (selectedImage.value != null) {
         // Upload new image
-        final ref = _storage.ref().child('produk_images/${DateTime.now().millisecondsSinceEpoch}');
+        final ref = _storage
+            .ref()
+            .child('produk_images/${DateTime.now().millisecondsSinceEpoch}');
         await ref.putFile(selectedImage.value!);
         imageUrl = await ref.getDownloadURL();
       }
@@ -74,20 +77,20 @@ class EditProdukController extends GetxController {
       isLoading.value = false;
       Get.back(); // Kembali ke halaman sebelumnya
       Get.snackbar(
-        'Berhasil', 
+        'Berhasil',
         'Produk berhasil diupdate',
         backgroundColor: Colors.white,
         colorText: Color(0xFF0288D1),
       );
-      } catch (e) {
-        isLoading.value = false;
-        Get.snackbar(
-          'Error', 
-          'Gagal update produk: ${e.toString()}',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
-      }
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar(
+        'Error',
+        'Gagal update produk: ${e.toString()}',
+        backgroundColor: const Color(0xFFFF5252),
+        colorText: Colors.white,
+      );
+    }
   }
 
   @override

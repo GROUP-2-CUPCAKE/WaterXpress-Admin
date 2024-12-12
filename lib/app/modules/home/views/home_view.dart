@@ -33,8 +33,8 @@ class _HomeViewState extends State<HomeView> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFF0288D1), Color(0xFF40C4FF),
-              // Color(0xFF40C4FF), Color(0xFF81D4FA),
+              Color(0xFF0288D1),
+              Color(0xFF40C4FF),
             ],
             begin: Alignment.centerRight,
             end: Alignment.centerLeft,
@@ -47,7 +47,7 @@ class _HomeViewState extends State<HomeView> {
                 // Header
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -87,10 +87,57 @@ class _HomeViewState extends State<HomeView> {
                             color: Colors.white,
                             onSelected: (value) {
                               if (value == 'logout') {
-                                // Panggil method logout dari HomeController
-                                final HomeController controller =
-                                    Get.find<HomeController>();
-                                controller.logout();
+                                // Tampilkan dialog konfirmasi logout
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    title: const Text(
+                                      'Konfirmasi Logout',
+                                      style: TextStyle(
+                                        // color: Color(0xFF40C4FF),
+                                        color: Color(0xFF0288D1),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    content: const Text(
+                                      'Kamu yakin ingin keluar dari aplikasi?',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text(
+                                          'Batal',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Panggil method logout dari HomeController
+                                          final HomeController controller =
+                                              Get.find<HomeController>();
+                                          controller.logout();
+
+                                          // Tutup dialog
+                                          Navigator.pop(context);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF0288D1)
+                                                  .withOpacity(0.9),
+                                        ),
+                                        child: const Text(
+                                          'Logout',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               }
                             },
                             itemBuilder: (BuildContext context) =>
@@ -128,7 +175,7 @@ class _HomeViewState extends State<HomeView> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 18, vertical: 18),
+                            horizontal: 16, vertical: 16),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -137,7 +184,8 @@ class _HomeViewState extends State<HomeView> {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black87,
+                                // color: Colors.black87,
+                                color: Color(0xFF0288D1),
                               ),
                             ),
                             // Di dalam build method
@@ -172,7 +220,7 @@ class _HomeViewState extends State<HomeView> {
                                   'Rp${controller.formatCurrency(totalPemasukan)}',
                                   style: const TextStyle(
                                     fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w600,
                                     color: Color(0xFF0288D1),
                                   ),
                                 );
@@ -268,7 +316,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
           child: InkWell(
-            splashColor: Color.fromARGB(255, 144, 200, 233),
+            splashColor: const Color.fromARGB(255, 144, 200, 233),
             child: const SizedBox(
               width: 50,
               height: 50,
@@ -294,29 +342,23 @@ class HomeContent extends StatelessWidget {
     const bottomNavHeight = 1.0;
 
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-            child: const Text(
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+            child: Text(
               'Produk yang Tersedia',
               style: TextStyle(
                 fontSize: 18,
-                color: Color(0xFF0277BD),
                 fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    offset: Offset(1.5, 1.5),
-                    color: Colors.black12,
-                    blurRadius: 3,
-                  ),
-                ],
+                color: Color(0xFF0288D1),
               ),
             ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
+
           // Area yang dapat digulir
           Expanded(
             child: StreamBuilder(
@@ -329,7 +371,6 @@ class HomeContent extends StatelessWidget {
                     ),
                   );
                 }
-
                 if (snapshot.hasError) {
                   return Center(
                     child: Column(
@@ -362,20 +403,36 @@ class HomeContent extends StatelessWidget {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(
+                  return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.shopping_basket_outlined,
-                          size: 50,
-                          color: Colors.grey,
+                        // Gambar ilustrasi
+                        Image.asset(
+                          'assets/images/foto.jpeg',
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.contain,
                         ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Tidak ada produk tersedia',
-                          style: TextStyle(color: Colors.grey),
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Tidak ada produk',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black54,
+                          ),
                         ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'Kamu belum memiliki produk apapun',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black45,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 30),
                       ],
                     ),
                   );
@@ -388,213 +445,267 @@ class HomeContent extends StatelessWidget {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     var produk = snapshot.data![index];
-                    return Card(
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      color: const Color.fromARGB(255, 237, 246, 255),
-                      margin: const EdgeInsets.only(bottom: 15),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.blue.withOpacity(0.3),
-                              Colors.blue.withOpacity(0.03),
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.toNamed('/edit-produk', arguments: produk.id);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.blue.withOpacity(0.1),
+                                Colors.blue.withOpacity(0.02),
+                              ],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blue.withOpacity(0.05),
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: const Offset(0, 1),
+                              ),
                             ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Gambar Produk
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: produk.images,
-                                    width: 60,
-                                    height: 100,
-                                    fit: BoxFit.cover,
-                                    errorWidget: (context, url, error) =>
-                                        Container(
-                                      color: Colors.grey[200],
-                                      child:
-                                          Icon(Icons.error, color: Colors.red),
-                                    ),
+                          child: Card(
+                            elevation: 0,
+                            color: Colors.transparent,
+                            margin: EdgeInsets.zero,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(
+                                color: const Color(0xFF0288D1).withOpacity(0.5),
+                                width: 0.5,
+                              ),
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: const Border(
+                                  bottom: BorderSide(
+                                    color: Color(0xFF0288D1),
+                                    width: 2,
+                                    style: BorderStyle.solid,
                                   ),
                                 ),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              const SizedBox(width: 15),
-                              // Informasi Produk
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                              child: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // const SizedBox(height: 10),
-                                    Text(
-                                      produk.nama,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF0288D1),
-                                        fontSize: 14,
-                                        letterSpacing: 0.5,
+                                    // Gambar Produk
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Rp${produk.harga},00',
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Color(0xFF2E7D32)),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.fact_check,
-                                          color: produk.stok > 0
-                                              ? Colors.orange[500]
-                                              : const Color(
-                                                  0xFFE53935), // Merah untuk stok habis
-                                          size: 14,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          'Stok: ${produk.stok} Unit',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: produk.stok > 0
-                                                ? Colors.orange[700]
-                                                : const Color(0xFFD32F2F),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: CachedNetworkImage(
+                                          imageUrl: produk.images,
+                                          width: 60,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                          errorWidget: (context, url, error) =>
+                                              Container(
+                                            color: Colors.grey[200],
+                                            child: const Icon(Icons.error,
+                                                color: Colors.red),
                                           ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 15),
+                                    // Informasi Produk
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(height: 15),
+                                          Text(
+                                            produk.nama,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xFF0288D1),
+                                              // color: Colors.black87,
+                                              fontSize: 16,
+                                              letterSpacing: 0.5,
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 6),
+                                          Row(
+                                            children: [
+                                              Text('Rp${produk.harga},00',
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w900,
+                                                    // fontWeight: FontWeight.bold,
+                                                    // color: Color(0xFF2E7D32),
+                                                    color: Colors.black54,
+                                                  )),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 6),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.fact_check,
+                                                color: produk.stok > 0
+                                                    ? const Color(
+                                                        0xFF0288D1) // Biru untuk stok tersedia
+                                                    : const Color(
+                                                        0xFFD32F2F), // Merah untuk stok habis
+                                                size: 14,
+                                              ),
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                'Stok: ${produk.stok}',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w200,
+                                                  // fontWeight: FontWeight.bold,
+                                                  // fontWeight: FontWeight.w500,
+                                                  color: produk.stok > 0
+                                                      ? const Color(
+                                                          0xFF0288D1) // Biru untuk stok tersedia
+                                                      : const Color(
+                                                          0xFFD32F2F), // Merah untuk stok habis
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // Tombol Edit dan Hapus
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        const SizedBox(height: 44),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: Container(
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white
+                                                    ..withOpacity(0.1),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: const Icon(
+                                                  Icons.edit,
+                                                  color: Color(0xFF40C4FF),
+                                                  size: 20,
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                Get.toNamed('/edit-produk',
+                                                    arguments: produk.id);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: Container(
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white
+                                                    ..withOpacity(0.1),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: const Icon(
+                                                  Icons.delete,
+                                                  color: Colors.red,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      AlertDialog(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                    ),
+                                                    title: const Text(
+                                                      'Konfirmasi Hapus',
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xFF0288D1),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                    content: const Text(
+                                                      'Kamu yakin ingin menghapus produk ini?',
+                                                      style: TextStyle(
+                                                          color: Colors.grey),
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                context),
+                                                        child: const Text(
+                                                          'Batal',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.grey),
+                                                        ),
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          controller
+                                                              .deleteProduct(
+                                                                  produk.id);
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              const Color(
+                                                                      0xFF0288D1)
+                                                                  .withOpacity(
+                                                                      0.9),
+                                                        ),
+                                                        child: const Text(
+                                                          'Hapus',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
                               ),
-                              // Tombol Edit dan Hapus
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  const SizedBox(height: 44),
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                          icon: Container(
-                                            padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white
-                                                ..withOpacity(0.1),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Icon(
-                                              Icons.edit,
-                                              color: Color(0xFF40C4FF),
-                                              size: 20,
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            Get.toNamed('/edit-produk',
-                                                arguments: produk.id);
-                                          },
-                                        ),
-                                        IconButton(
-                                          icon: Container(
-                                            padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white
-                                                ..withOpacity(0.1),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Icon(
-                                              Icons.delete,
-                                              color: Colors.red,
-                                              size: 20,
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                ),
-                                                title: const Text(
-                                                  'Konfirmasi Hapus',
-                                                  style: TextStyle(
-                                                    color: Color(0xFF40C4FF),
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                content: const Text(
-                                                  'Anda yakin ingin menghapus produk ini?',
-                                                  style: TextStyle(
-                                                      color: Colors.grey),
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
-                                                    child: const Text(
-                                                      'Batal',
-                                                      style: TextStyle(
-                                                          color: Colors.grey),
-                                                    ),
-                                                  ),
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      controller.deleteProduct(
-                                                          produk.id);
-                                                      Navigator.pop(context);
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor:
-                                                          const Color(
-                                                                  0xFF40C4FF)
-                                                              .withOpacity(0.9),
-                                                    ),
-                                                    child: const Text(
-                                                      'Hapus',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
