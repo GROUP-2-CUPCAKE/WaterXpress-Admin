@@ -184,8 +184,9 @@ class _HomeViewState extends State<HomeView> {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                // color: Colors.black87,
-                                color: Color(0xFF0288D1),
+                                color: Colors.black54,
+                                // color: Colors.grey,
+                                // color: Color(0xFF0288D1),
                               ),
                             ),
                             // Di dalam build method
@@ -221,7 +222,15 @@ class _HomeViewState extends State<HomeView> {
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
-                                    color: Color(0xFF0288D1),
+                                    // color: Color(0xFF0288D1),
+                                    color: Color(0xFF43A047),
+                                    // shadows: [
+                                    // Shadow(
+                                    // blurRadius: 2.0,
+                                    // color: Colors.black26,
+                                    // offset: Offset(1.0, 1.0),
+                                    // ),
+                                    // ],
                                   ),
                                 );
                               },
@@ -471,6 +480,7 @@ class HomeContent extends StatelessWidget {
                               ),
                             ],
                           ),
+                          //tampilan card
                           child: Card(
                             elevation: 0,
                             color: Colors.transparent,
@@ -533,8 +543,8 @@ class HomeContent extends StatelessWidget {
                                             produk.nama,
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              color: Color(0xFF0288D1),
-                                              // color: Colors.black87,
+                                              color: Colors.black87,
+                                              // color: Color(0xFF0288D1),
                                               fontSize: 16,
                                               letterSpacing: 0.5,
                                             ),
@@ -560,8 +570,9 @@ class HomeContent extends StatelessWidget {
                                               Icon(
                                                 Icons.fact_check,
                                                 color: produk.stok > 0
-                                                    ? const Color(
-                                                        0xFF0288D1) // Biru untuk stok tersedia
+                                                    // ? const Colors.grey
+                                                    ? const Color.fromARGB(
+                                                        255, 83, 89, 93)
                                                     : const Color(
                                                         0xFFD32F2F), // Merah untuk stok habis
                                                 size: 14,
@@ -572,11 +583,9 @@ class HomeContent extends StatelessWidget {
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w200,
-                                                  // fontWeight: FontWeight.bold,
-                                                  // fontWeight: FontWeight.w500,
                                                   color: produk.stok > 0
-                                                      ? const Color(
-                                                          0xFF0288D1) // Biru untuk stok tersedia
+                                                      ? const Color.fromARGB(
+                                                          255, 83, 89, 93)
                                                       : const Color(
                                                           0xFFD32F2F), // Merah untuk stok habis
                                                 ),

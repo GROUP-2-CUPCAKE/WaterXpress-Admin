@@ -49,6 +49,7 @@ dependencies:
   progress_tracker: ^0.0.12
   intl: ^0.20.1
   curved_labeled_navigation_bar: ^2.0.5
+  connectivity_plus: ^6.1.1
   # curved_labeled_navigation_bar: ^2.0.5
 
 dev_dependencies:
