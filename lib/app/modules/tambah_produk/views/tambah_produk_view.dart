@@ -262,7 +262,7 @@ class TambahProdukView extends GetView<TambahProdukController> {
                     child: Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 16, horizontal: 20),
+                          vertical: 14, horizontal: 20),
                       child: const Text(
                         "Simpan",
                         style: TextStyle(color: Colors.white, fontSize: 16),
