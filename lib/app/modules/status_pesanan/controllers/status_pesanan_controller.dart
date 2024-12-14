@@ -8,24 +8,18 @@ class StatusPesananController extends GetxController {
 
   // Stream untuk mendapatkan Pesanan dengan status 'selesai'
   Stream<List<Pesanan>> getAllCompletedProducts() {
-    return FirebaseFirestore.instance
-        .collection('Pesanan')
-        .where('status', whereNotIn: ['Selesai'])
-        .snapshots()
-        .map((snapshot) => snapshot.docs.map((doc) {
-              var pesanan = Pesanan.fromMap(doc.data());
-              pesanan.id = doc.id;
-              return pesanan;
-            }).toList());
+  return FirebaseFirestore.instance
+      .collection('Pesanan')
+      .orderBy('tanggalPesanan', descending: true)
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .where((doc) => 
+              doc['status'] != 'Selesai' && 
+              doc['status'] != 'Dibatalkan')
+          .map((doc) {
+            var pesanan = Pesanan.fromMap(doc.data());
+            pesanan.id = doc.id;
+            return pesanan;
+          }).toList());
   }
-
-  // Contoh method untuk menggunakan ID dokumen
-  // void updatePesananStatus(Pesanan pesanan) {
-  //   if (pesanan.id != null) {
-  //     FirebaseFirestore.instance
-  //         .collection('Pesanan')
-  //         .doc(pesanan.id)
-  //         .update({'status': 'selesai'});
-  //   }
-  // }
 }

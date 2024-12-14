@@ -8,22 +8,17 @@ class RiwayatPesananController extends GetxController {
 
   // Stream untuk mendapatkan Pesanan dengan status 'selesai'
   Stream<List<Pesanan>> getAllCompletedProducts() {
-    return FirebaseFirestore.instance
-        .collection('Pesanan')
-        .where('status', isEqualTo: 'Selesai')
-        // .orderBy('tanggalPesanan', descending: true)
-        .snapshots()
-        .map((snapshot) => snapshot.docs.map((doc) {
-              var pesanan = Pesanan.fromMap(doc.data());
-              pesanan.id = doc.id;
-              return pesanan;
-            }).toList());
+  return FirebaseFirestore.instance
+      .collection('Pesanan')
+      .orderBy('tanggalPesanan', descending: true)
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .where((doc) => 
+              doc['status'] == 'Selesai')
+          .map((doc) {
+            var pesanan = Pesanan.fromMap(doc.data());
+            pesanan.id = doc.id;
+            return pesanan;
+          }).toList());
   }
-
-  // Stream<QuerySnapshot<Object?>> streamData() {
-  // return FirebaseFirestore.instance
-  // .collection('Pesanan')
-  // .orderBy('tanggalPesanan', descending: true) // Mengurutkan berdasarkan
-  // .snapshots();
-  // }
 }
