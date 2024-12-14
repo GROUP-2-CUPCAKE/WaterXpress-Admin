@@ -13,6 +13,17 @@ class StatusPesananView extends StatefulWidget {
 }
 
 class _StatusPesananViewState extends State<StatusPesananView> {
+  // Variabel untuk menyimpan status terpilih
+  String _selectedStatus = 'Semua';
+
+  // List status yang tersedia
+  final List<String> _statusOptions = [
+    'Semua', 
+    'Diproses', 
+    'Dikemas', 
+    'Dikirim', 
+  ];
+
   // Fungsi untuk memformat tanggal
   String _formatTanggal(DateTime tanggalPesanan) {
     return DateFormat('dd MMM yyyy HH:mm').format(tanggalPesanan);
@@ -43,6 +54,44 @@ class _StatusPesananViewState extends State<StatusPesananView> {
         .join(', ');
   }
 
+  // Method untuk menampilkan bottom sheet filter status
+  void _showStatusFilterBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: _statusOptions.map((status) {
+              return ListTile(
+                title: Text(status),
+                trailing: _selectedStatus == status 
+                  ? const Icon(Icons.check, color: Colors.blue)
+                  : null,
+                onTap: () {
+                  setState(() {
+                    _selectedStatus = status;
+                  });
+                  Navigator.pop(context);
+                },
+              );
+            }).toList(),
+          ),
+        );
+      }
+    );
+  }
+
+  // Method untuk memfilter pesanan berdasarkan status
+  bool _filterPesanan(Pesanan pesanan) {
+    if (_selectedStatus == 'Semua') return true;
+    return pesanan.status?.toLowerCase() == _selectedStatus.toLowerCase();
+  }
+
   // Fungsi untuk mendapatkan warna status
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
@@ -57,10 +106,59 @@ class _StatusPesananViewState extends State<StatusPesananView> {
     }
   }
 
+  // Widget helper untuk baris informasi
+  Widget _buildInfoRow({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: const Color(0xFF0288D1).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            color: const Color(0xFF0288D1),
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.black54,
+                ),
+              ),
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final StatusPesananController controller =
-        Get.put(StatusPesananController());
+    final StatusPesananController controller = Get.put(StatusPesananController());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -68,6 +166,13 @@ class _StatusPesananViewState extends State<StatusPesananView> {
         title: const Text('Daftar Pesanan'),
         automaticallyImplyLeading: false,
         centerTitle: true,
+        actions: [
+          // Tombol filter status di pojok kanan
+          IconButton(
+            icon: const Icon(Icons.filter_list),
+            onPressed: _showStatusFilterBottomSheet,
+          ),
+        ],
         foregroundColor: Colors.white,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -117,13 +222,17 @@ class _StatusPesananViewState extends State<StatusPesananView> {
             );
           }
 
-          //pesanan kosong
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          // Filter pesanan berdasarkan status yang dipilih
+          List<Pesanan> filteredPesanan = snapshot.data
+              ?.where(_filterPesanan)
+              .toList() ?? [];
+
+          // Tampilan untuk pesanan kosong setelah difilter
+                    if (filteredPesanan.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Gambar ilustrasi
                   Image.asset(
                     'assets/images/foto.jpeg',
                     width: 200,
@@ -131,9 +240,9 @@ class _StatusPesananViewState extends State<StatusPesananView> {
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(height: 20),
-                  const Text(
-                    'Tidak ada pesanan',
-                    style: TextStyle(
+                  Text(
+                    'Tidak ada pesanan dengan status $_selectedStatus',
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Colors.black54,
@@ -141,14 +250,13 @@ class _StatusPesananViewState extends State<StatusPesananView> {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    'Kamu belum memiliki pesanan apapun',
+                    'Silakan pilih status lain atau periksa kembali nanti',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.black45,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 30),
                 ],
               ),
             );
@@ -156,10 +264,10 @@ class _StatusPesananViewState extends State<StatusPesananView> {
 
           return ListView.separated(
             padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 18),
-            itemCount: snapshot.data!.length,
+            itemCount: filteredPesanan.length,
             separatorBuilder: (context, index) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
-              Pesanan pesanan = snapshot.data![index];
+              Pesanan pesanan = filteredPesanan[index];
               return GestureDetector(
                 onTap: () {
                   Get.toNamed(Routes.KONFIRMASI_PESANAN, arguments: pesanan.id);
@@ -196,7 +304,6 @@ class _StatusPesananViewState extends State<StatusPesananView> {
                       ),
                     ),
                     child: Container(
-                      // Dekorasi border bawah
                       decoration: BoxDecoration(
                         border: const Border(
                           bottom: BorderSide(
@@ -254,6 +361,26 @@ class _StatusPesananViewState extends State<StatusPesananView> {
                                 thickness: 1,
                               ),
                             ),
+
+                            // Status Pesanan
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.circle, 
+                                  color: _getStatusColor(pesanan.status ?? ''),
+                                  size: 12,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  pesanan.status ?? 'Status Tidak Diketahui',
+                                  style: TextStyle(
+                                    color: _getStatusColor(pesanan.status ?? ''),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
 
                             // Informasi Pembeli
                             _buildInfoRow(
@@ -322,58 +449,9 @@ class _StatusPesananViewState extends State<StatusPesananView> {
       ),
     );
   }
-
-  // Widget helper untuk baris informasi
-  Widget _buildInfoRow({
-    required IconData icon,
-    required String label,
-    required String value,
-  }) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: const Color(0xFF0288D1).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(
-            icon,
-            color: const Color(0xFF0288D1),
-            size: 20,
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.black54,
-                ),
-              ),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w500,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 }
 
+// Extension untuk tambahan method pada model Pesanan
 extension PesananExtension on Pesanan {
   // Contoh method untuk mendapatkan status warna
   Color get statusColor {
@@ -383,7 +461,7 @@ extension PesananExtension on Pesanan {
       case 'proses':
         return Colors.orange;
       case 'dibatalkan':
-        return Colors.red;
+              return Colors.red;
       default:
         return Colors.grey;
     }
