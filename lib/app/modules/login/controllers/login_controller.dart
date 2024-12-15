@@ -31,8 +31,8 @@ class LoginController extends GetxController {
         'Email tidak boleh kosong.',
         duration: const Duration(seconds: 2),
         margin: const EdgeInsets.all(12),
-        backgroundColor: const Color(0xFFFF5252),
-        colorText: Colors.white,
+        backgroundColor: Colors.white,
+        colorText: const Color(0xFFFF5252),
       );
       return;
     }
@@ -43,8 +43,8 @@ class LoginController extends GetxController {
         'Password tidak boleh kosong.',
         duration: const Duration(seconds: 2),
         margin: const EdgeInsets.all(12),
-        backgroundColor: const Color(0xFFFF5252),
-        colorText: Colors.white,
+        backgroundColor: Colors.white,
+        colorText: const Color(0xFFFF5252),
       );
       return;
     }
@@ -58,7 +58,7 @@ class LoginController extends GetxController {
       if (userCredential.user!.emailVerified) {
         Get.snackbar(
           'Sukses',
-          'Anda berhasil masuk',
+          'Kamu sudah berhasil masuk',
           duration: const Duration(seconds: 2),
           margin: const EdgeInsets.all(12),
           backgroundColor: Colors.white,
@@ -68,9 +68,9 @@ class LoginController extends GetxController {
       } else {
         Get.snackbar(
           'Error',
-          'Silahkan verifikasi email Anda!',
-          backgroundColor: const Color(0xFFFF5252),
-          colorText: Colors.white,
+          'Silahkan verifikasi email terlebih dahulu!',
+          backgroundColor: Colors.white,
+          colorText: const Color(0xFFFF5252),
           duration: const Duration(seconds: 2),
           margin: const EdgeInsets.all(12),
         );
@@ -81,8 +81,8 @@ class LoginController extends GetxController {
         Get.snackbar(
           'Error',
           'Email tidak ditemukan di Firebase',
-          backgroundColor: const Color(0xFFFF5252),
-          colorText: Colors.white,
+          backgroundColor: Colors.white,
+          colorText: const Color(0xFFFF5252),
           duration: const Duration(seconds: 2),
           margin: const EdgeInsets.all(12),
         );
@@ -90,8 +90,8 @@ class LoginController extends GetxController {
         Get.snackbar(
           'Error',
           'Kata sandi salah. Silahkan coba lagi!',
-          backgroundColor: const Color(0xFFFF5252),
-          colorText: Colors.white,
+          backgroundColor: Colors.white,
+          colorText: const Color(0xFFFF5252),
           duration: const Duration(seconds: 2),
           margin: const EdgeInsets.all(12),
         );
@@ -99,8 +99,8 @@ class LoginController extends GetxController {
         Get.snackbar(
           'Error',
           'Terlalu banyak permintaan. Coba lagi nanti!',
-          backgroundColor: const Color(0xFFFF5252),
-          colorText: Colors.white,
+          backgroundColor: Colors.white,
+          colorText: const Color(0xFFFF5252),
           duration: const Duration(seconds: 2),
           margin: const EdgeInsets.all(12),
         );
@@ -108,8 +108,8 @@ class LoginController extends GetxController {
         Get.snackbar(
           'Error',
           'Periksa email dan kata sandi. Silakan coba lagi!',
-          backgroundColor: const Color(0xFFFF5252),
-          colorText: Colors.white,
+          backgroundColor: Colors.white,
+          colorText: const Color(0xFFFF5252),
           duration: const Duration(seconds: 2),
           margin: const EdgeInsets.all(12),
         );

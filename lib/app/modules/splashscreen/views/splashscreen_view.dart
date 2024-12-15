@@ -10,7 +10,7 @@ class SplashscreenView extends StatelessWidget {
   Widget build(BuildContext context) {
     final authC = Get.find<LoginController>();
 
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (authC.isUserLoggedIn()) {
         Get.offAllNamed(Routes.HOME);
       } else {
@@ -27,13 +27,13 @@ class SplashscreenView extends StatelessWidget {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Center(
+        child: const Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Expanded to push content to the center
-              const Spacer(flex: 2),
+              Spacer(flex: 2),
 
               // Centered CircleAvatar
               Center(
@@ -43,20 +43,20 @@ class SplashscreenView extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 30),
+              SizedBox(height: 30),
 
               // Centered Progress Indicator
-              const Center(
+              Center(
                 child: CircularProgressIndicator.adaptive(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               ),
 
               // Expanded to push content to the bottom
-              const Spacer(flex: 2),
+              Spacer(flex: 2),
 
               // Centered Text
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(bottom: 20.0),
                 child: Text(
                   "by CupCake Team",

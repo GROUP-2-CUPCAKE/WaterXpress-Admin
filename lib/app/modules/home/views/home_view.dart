@@ -126,13 +126,38 @@ class _HomeViewState extends State<HomeView> {
                                           Navigator.pop(context);
                                         },
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xFF0288D1)
-                                                  .withOpacity(0.9),
+                                          backgroundColor: Colors.transparent,
+                                          shadowColor: Colors.transparent,
+                                          padding: EdgeInsets.zero,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
                                         ),
-                                        child: const Text(
-                                          'Logout',
-                                          style: TextStyle(color: Colors.white),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            gradient: const LinearGradient(
+                                              colors: [
+                                                Color(0xFF40C4FF),
+                                                Color(0xFF0288D1)
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 24,
+                                            vertical: 12,
+                                          ),
+                                          child: const Text(
+                                            'Logout',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -680,6 +705,23 @@ class HomeContent extends StatelessWidget {
                                                         ),
                                                       ),
                                                       ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          shadowColor: Colors
+                                                              .transparent,
+                                                          padding:
+                                                              EdgeInsets.zero,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                          ),
+                                                        ),
                                                         onPressed: () {
                                                           controller
                                                               .deleteProduct(
@@ -687,19 +729,43 @@ class HomeContent extends StatelessWidget {
                                                           Navigator.pop(
                                                               context);
                                                         },
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          backgroundColor:
-                                                              const Color(
-                                                                      0xFF0288D1)
-                                                                  .withOpacity(
-                                                                      0.9),
-                                                        ),
-                                                        child: const Text(
-                                                          'Hapus',
-                                                          style: TextStyle(
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            gradient:
+                                                                const LinearGradient(
+                                                              colors: [
+                                                                Color(
+                                                                    0xFF40C4FF),
+                                                                Color(
+                                                                    0xFF0288D1)
+                                                              ],
+                                                              begin: Alignment
+                                                                  .topLeft,
+                                                              end: Alignment
+                                                                  .bottomRight,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                          ),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                            horizontal: 24,
+                                                            vertical: 12,
+                                                          ),
+                                                          child: const Text(
+                                                            'Hapus',
+                                                            style: TextStyle(
                                                               color:
-                                                                  Colors.white),
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
                                                     ],
