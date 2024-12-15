@@ -222,10 +222,9 @@ class TambahProdukView extends GetView<TambahProdukController> {
                         controller.stokController.text.isEmpty ||
                         controller.image.value.path.isEmpty) {
                       Get.snackbar('Error', 'Lengkapi data terlebih dahulu',
-                          backgroundColor: const Color(0xFFFF5252),
-                          colorText: Colors.white,
-                          borderRadius: 10,
-                          margin: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(12),
+                          backgroundColor: Colors.white,
+                          colorText: const Color(0xFFFF5252),
                           snackStyle: SnackStyle.FLOATING);
                     } else {
                       await controller.saveImages(

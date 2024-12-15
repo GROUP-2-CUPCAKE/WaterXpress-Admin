@@ -80,7 +80,6 @@ class KonfirmasiPesananController extends GetxController {
   void nextButton(String pesananId) {
     if (index.value < statusList.length - 1) {
       index.value++;
-      // Update status langsung setelah tombol ditekan
       // Menandai status yang aktif
       statusList[index.value].active = true;
       updateStatusPesanan(pesananId, statusList[index.value].name);

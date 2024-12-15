@@ -18,10 +18,10 @@ class _StatusPesananViewState extends State<StatusPesananView> {
 
   // List status yang tersedia
   final List<String> _statusOptions = [
-    'Semua', 
-    'Diproses', 
-    'Dikemas', 
-    'Dikirim', 
+    'Semua',
+    'Diproses',
+    'Dikemas',
+    'Dikirim',
   ];
 
   // Fungsi untuk memformat tanggal
@@ -57,33 +57,39 @@ class _StatusPesananViewState extends State<StatusPesananView> {
   // Method untuk menampilkan bottom sheet filter status
   void _showStatusFilterBottomSheet() {
     showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: _statusOptions.map((status) {
-              return ListTile(
-                title: Text(status),
-                trailing: _selectedStatus == status 
-                  ? const Icon(Icons.check, color: Colors.blue)
-                  : null,
-                onTap: () {
-                  setState(() {
-                    _selectedStatus = status;
-                  });
-                  Navigator.pop(context);
-                },
-              );
-            }).toList(),
-          ),
-        );
-      }
-    );
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: _statusOptions.map((status) {
+                return ListTile(
+                  title: Text(
+                    status,
+                    style: TextStyle(
+                      color: _getStatusColor(
+                          status), // Panggil metode untuk mendapatkan warna
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: _selectedStatus == status
+                      ? const Icon(Icons.check, color: Colors.blue)
+                      : null,
+                  onTap: () {
+                    setState(() {
+                      _selectedStatus = status;
+                    });
+                    Navigator.pop(context);
+                  },
+                );
+              }).toList(),
+            ),
+          );
+        });
   }
 
   // Method untuk memfilter pesanan berdasarkan status
@@ -92,17 +98,17 @@ class _StatusPesananViewState extends State<StatusPesananView> {
     return pesanan.status?.toLowerCase() == _selectedStatus.toLowerCase();
   }
 
-  // Fungsi untuk mendapatkan warna status
+  // Metode untuk menentukan warna status
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
-      case 'selesai':
-        return Colors.green;
-      case 'proses':
-        return Colors.orange;
-      case 'dibatalkan':
-        return Colors.red;
+      case 'diproses':
+        return const Color(0xFFBE6E46);
+      case 'dikemas':
+        return const Color(0xFFFF7F50);
+      case 'dikirim':
+        return Colors.purple;
       default:
-        return Colors.grey;
+        return Colors.blue;
     }
   }
 
@@ -158,7 +164,8 @@ class _StatusPesananViewState extends State<StatusPesananView> {
 
   @override
   Widget build(BuildContext context) {
-    final StatusPesananController controller = Get.put(StatusPesananController());
+    final StatusPesananController controller =
+        Get.put(StatusPesananController());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -223,12 +230,11 @@ class _StatusPesananViewState extends State<StatusPesananView> {
           }
 
           // Filter pesanan berdasarkan status yang dipilih
-          List<Pesanan> filteredPesanan = snapshot.data
-              ?.where(_filterPesanan)
-              .toList() ?? [];
+          List<Pesanan> filteredPesanan =
+              snapshot.data?.where(_filterPesanan).toList() ?? [];
 
           // Tampilan untuk pesanan kosong setelah difilter
-                    if (filteredPesanan.isEmpty) {
+          if (filteredPesanan.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -366,15 +372,16 @@ class _StatusPesananViewState extends State<StatusPesananView> {
                             Row(
                               children: [
                                 Icon(
-                                  Icons.circle, 
+                                  Icons.circle,
                                   color: _getStatusColor(pesanan.status ?? ''),
-                                  size: 12,
+                                  size: 10,
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
                                   pesanan.status ?? 'Status Tidak Diketahui',
                                   style: TextStyle(
-                                    color: _getStatusColor(pesanan.status ?? ''),
+                                    color:
+                                        _getStatusColor(pesanan.status ?? ''),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -461,7 +468,7 @@ extension PesananExtension on Pesanan {
       case 'proses':
         return Colors.orange;
       case 'dibatalkan':
-              return Colors.red;
+        return Colors.red;
       default:
         return Colors.grey;
     }

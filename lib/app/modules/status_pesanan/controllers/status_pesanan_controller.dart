@@ -8,18 +8,17 @@ class StatusPesananController extends GetxController {
 
   // Stream untuk mendapatkan Pesanan dengan status 'selesai'
   Stream<List<Pesanan>> getAllCompletedProducts() {
-  return FirebaseFirestore.instance
-      .collection('Pesanan')
-      .orderBy('tanggalPesanan', descending: true)
-      .snapshots()
-      .map((snapshot) => snapshot.docs
-          .where((doc) => 
-              doc['status'] != 'Selesai' && 
-              doc['status'] != 'Dibatalkan')
-          .map((doc) {
-            var pesanan = Pesanan.fromMap(doc.data());
-            pesanan.id = doc.id;
-            return pesanan;
-          }).toList());
+    return FirebaseFirestore.instance
+        .collection('Pesanan')
+        .orderBy('tanggalPesanan', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+                .where((doc) =>
+                    doc['status'] != 'Selesai' && doc['status'] != 'Dibatalkan')
+                .map((doc) {
+              var pesanan = Pesanan.fromMap(doc.data());
+              pesanan.id = doc.id;
+              return pesanan;
+            }).toList());
   }
 }

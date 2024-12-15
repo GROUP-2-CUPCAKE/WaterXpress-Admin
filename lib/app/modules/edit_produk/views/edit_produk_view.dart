@@ -143,7 +143,7 @@ class EditProdukView extends StatelessWidget {
                   if (controller.selectedImage.value != null ||
                       controller.existingImageUrl.value.isNotEmpty)
                     IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.blue),
+                      icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () {
                         controller.selectedImage.value = null;
                         controller.existingImageUrl.value = '';
@@ -253,10 +253,9 @@ class EditProdukView extends StatelessWidget {
                         controller.hargaController.text.isEmpty ||
                         controller.stokController.text.isEmpty) {
                       Get.snackbar('Error', 'Lengkapi data terlebih dahulu',
-                          backgroundColor: const Color(0xFFFF5252),
-                          colorText: Colors.white,
-                          borderRadius: 10,
-                          margin: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(12),
+                          backgroundColor: Colors.white,
+                          colorText: const Color(0xFFFF5252),
                           snackStyle: SnackStyle.FLOATING);
                       return;
                     }

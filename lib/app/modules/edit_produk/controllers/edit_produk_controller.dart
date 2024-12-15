@@ -38,7 +38,13 @@ class EditProdukController extends GetxController {
       // Simpan URL gambar yang ada
       existingImageUrl.value = productDoc['images'] ?? '';
     } catch (e) {
-      Get.snackbar('Error', 'Gagal memuat detail produk');
+      Get.snackbar(
+        'Error',
+        'Gagal memuat detail produk',
+        margin: const EdgeInsets.all(12),
+        backgroundColor: Colors.white,
+        colorText: const Color(0xFFFF5252),
+      );
     }
   }
 
@@ -46,7 +52,13 @@ class EditProdukController extends GetxController {
     if (namaController.text.isEmpty ||
         hargaController.text.isEmpty ||
         stokController.text.isEmpty) {
-      Get.snackbar('Error', 'Semua field harus diisi');
+      Get.snackbar(
+        'Error',
+        'Semua field harus diisi',
+        margin: const EdgeInsets.all(12),
+        backgroundColor: Colors.white,
+        colorText: const Color(0xFFFF5252),
+      );
       return;
     }
 
@@ -87,8 +99,9 @@ class EditProdukController extends GetxController {
       Get.snackbar(
         'Error',
         'Gagal update produk: ${e.toString()}',
-        backgroundColor: const Color(0xFFFF5252),
-        colorText: Colors.white,
+        margin: const EdgeInsets.all(12),
+        backgroundColor: Colors.white,
+        colorText: const Color(0xFFFF5252),
       );
     }
   }

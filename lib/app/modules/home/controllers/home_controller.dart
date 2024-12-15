@@ -15,10 +15,8 @@ class HomeController extends GetxController {
 
   // Stream untuk mendapatkan semua produk
   Stream<List<Produk>> getAllProducts() {
-    return FirebaseFirestore.instance
-        .collection('Produk')
-        .snapshots()
-        .map((snapshot) => 
+    return FirebaseFirestore.instance.collection('Produk').snapshots().map(
+        (snapshot) =>
             snapshot.docs.map((doc) => Produk.fromJson(doc.data())).toList());
   }
 
@@ -27,17 +25,19 @@ class HomeController extends GetxController {
     try {
       await ref.doc(id).delete();
       Get.snackbar(
-        'Berhasil', 
+        'Berhasil',
         'Produk berhasil dihapus',
+        margin: const EdgeInsets.all(12),
         backgroundColor: Colors.white,
         colorText: Color(0xFF0288D1),
       );
     } catch (e) {
       Get.snackbar(
-        'Error', 
+        'Error',
         'Gagal menghapus produk: $e',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+        margin: const EdgeInsets.all(12),
+        backgroundColor: Colors.white,
+        colorText: const Color(0xFFFF5252),
       );
     }
   }
@@ -64,11 +64,8 @@ class HomeController extends GetxController {
 
   // Method untuk memformat mata uang
   String formatCurrency(double value) {
-    final formatter = NumberFormat.currency(
-      locale: 'id_ID', 
-      symbol: '', 
-      decimalDigits: 2
-    );
+    final formatter =
+        NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 2);
     return formatter.format(value);
   }
 }
