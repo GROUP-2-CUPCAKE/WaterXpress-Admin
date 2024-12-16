@@ -50,11 +50,19 @@ dependencies:
   intl: ^0.20.1
   curved_labeled_navigation_bar: ^2.0.5
   connectivity_plus: ^6.1.1
+  flutter_launcher_icons: ^0.14.2
   # curved_labeled_navigation_bar: ^2.0.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
