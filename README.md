@@ -1,16 +1,41 @@
-# waterxpress_admin
+# WaterXpress 💧 (Admin Side)
 
-A new Flutter project.
+<p align="center"> <img src="assets/images/logo.png" width="250"> </p>
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+Aplikasi WaterXpress Role Admin
 
-A few resources to get you started if this is your first Flutter project:
+<h2>🌟 Fitur Unggulan</h2>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+<ol>
+  <li><b>Pengelolaan Produk</b>
+    <p style="margin-left: 20px;">Admin dapat menambah, mengedit, dan menghapus produk.</p>
+  </li>
+  <li><b>Pemantauan Pendapata</b>
+    <p style="margin-left: 20px;">Menyediakan laporan pendapatan secara terstruktur</p>
+  </li>
+    <li><b>Konfirmasi Pesanan</b>
+    <p style="margin-left: 20px;">Admin dapat mengkonfirmasi pesanan saat sedang dikemas, diproses, atau dikirimkan secara real-time</p>
+  </li>
+  <li><b>Filter Status Pesanan</b>
+    <p style="margin-left: 20px;">Admin dapat memfilter status pesanan</p>
+  </li>
+  <li><b>Riwayat Pesanan</b>
+    <p style="margin-left: 20px;">Menampilkan riwayat pesanan pelanggan yang sudah selesai dikirimkan.</p>
+  </li>
+</ol>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📦 Instalasi
+
+```bash
+# Clone repositori
+git clone https://github.com/GROUP-2-CUPCAKE/waterxpress_admin.git
+
+# Masuk direktori proyek
+cd waterxpress
+
+# Dapatkan dependensi
+flutter pub get
+
+# Jalankan aplikasi
+flutter run
